@@ -5,6 +5,7 @@
  */
 package Business.Enterprise;
 
+import Business.Network.Network;
 import Business.Organization.Organization;
 import Business.Organization.OrganizationDirectory;
 import Business.Role.Role;
@@ -17,6 +18,7 @@ import java.util.HashSet;
 public abstract class Enterprise extends Organization{
 
 private EnterpriseType enterpriseType;
+private Network network;
     private OrganizationDirectory organizationDirectory;
     
     public Enterprise(String name, EnterpriseType type) {
@@ -51,4 +53,13 @@ private EnterpriseType enterpriseType;
     public OrganizationDirectory getOrganizationDirectory() {
         return organizationDirectory;
     }    
+
+    public Network getNetwork() {
+        return network;
+    }
+
+    public void setNetwork(Network network) {
+        this.network = network;
+    }
+    
 }

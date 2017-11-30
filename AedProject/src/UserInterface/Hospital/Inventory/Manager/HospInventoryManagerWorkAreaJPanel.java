@@ -8,6 +8,7 @@ package UserInterface.Hospital.Inventory.Manager;
 import Business.BloodBank.BloodBankInventoryManager;
 import Business.BloodBank.BloodGroup;
 import Business.EcoSystem;
+import Business.Enterprise.BloodBankEnterprise;
 import Business.Enterprise.Enterprise;
 import Business.Hospital.HospitalInventoryManager;
 import Business.Network.Network;
@@ -44,14 +45,15 @@ public class HospInventoryManagerWorkAreaJPanel extends javax.swing.JPanel {
         this.account=account;
         this.business=business;
         this.organization= organization;
-        for(HospitalInventoryManager him1 : organization.getListOfHospitalInventoryManager())
+        him = (HospitalInventoryManager) account.getEmployee().getP();
+        /*for(HospitalInventoryManager him1 : organization.getListOfHospitalInventoryManager())
         {
             if (account.getEmployee().getName().equals(him1.getName()))
             {
                 him = him1;
                 
             }
-        }
+        }*/
         if (him.getWorkQueue() == null) {
             WorkQueue w = new WorkQueue();
             him.setWorkQueue(w);
@@ -93,7 +95,8 @@ public class HospInventoryManagerWorkAreaJPanel extends javax.swing.JPanel {
         model.setRowCount(0);
         
         for (WorkRequest work : him.getWorkQueue().getWorkRequestList()){
-           if(work instanceof BloodBankWQ){ 
+           if((work instanceof BloodBankWQ) && (!work.getStatus().equals("Complete")))
+           { 
             Object[] row = new Object[4];
             row[0] = ((BloodBankWQ) work).getBloodGroup();
             row[1] = ((BloodBankWQ) work).getQuant();
@@ -326,12 +329,38 @@ public class HospInventoryManagerWorkAreaJPanel extends javax.swing.JPanel {
                     request.setStatus("Requested");
                     request.setSender(account);
                     v.setAutoFlag(false);
-                    BloodBankInventoryManager bbim=(BloodBankInventoryManager) comboBloodBank.getSelectedItem();
-                    bbim.getWorkQueue().getWorkRequestList().add(request);
-                    organization.getWorkQueue().getWorkRequestList().add(request);
+                    //BloodBankInventoryManager bbim=(BloodBankInventoryManager) comboBloodBank.getSelectedItem();
+                    //bbim.getWorkQueue().getWorkRequestList().add(request);
+                    //organization.getWorkQueue().getWorkRequestList().add(request);
+                    //account.getWorkQueue().getWorkRequestList().add(request);
+                   // business.getWorkQueue().getWorkRequestList().add(request);
+                    //him.getWorkQueue().getWorkRequestList().add(request);
+                    Organization org = null;
+                    Enterprise ent = null;
+                    for (Enterprise e1 : enterprise.getNetwork().getEnterpriseDirectory().getEnterpriseList()){
+                        if (e1 instanceof BloodBankEnterprise){
+                            ent = e1;
+                            for(Organization o1: ent.getOrganizationDirectory().getOrganizationList())
+                            {
+                                if(o1 instanceof BloodBankInventoryManagerOrganization)
+                                {
+                                    org = o1;
+                                    break;
+                                }
+                            }
+                            break;
+                        }
+                    }
+                    if (org!=null)
+                    {
+                        org.getWorkQueue().getWorkRequestList().add(request);
+                        //userAccount.getWorkQueue().getWorkRequestList().add(request);
+                  //  }
+                    //organization.getWorkQueue().getWorkRequestList().add(request);
                     account.getWorkQueue().getWorkRequestList().add(request);
-                    business.getWorkQueue().getWorkRequestList().add(request);
+                    //business.getWorkQueue().getWorkRequestList().add(request);
                     him.getWorkQueue().getWorkRequestList().add(request);
+                    }
                     populateWorkQueueTable();
                 }
                 populateAvailable();
@@ -349,12 +378,33 @@ public class HospInventoryManagerWorkAreaJPanel extends javax.swing.JPanel {
         request.setQuant(Integer.parseInt(txtquant.getText()));
         request.setStatus("Requested");
         request.setSender(account);
-        BloodBankInventoryManager bbim = (BloodBankInventoryManager) comboBloodBank.getSelectedItem();
-        bbim.getWorkQueue().getWorkRequestList().add(request);
-        organization.getWorkQueue().getWorkRequestList().add(request);
+       // BloodBankInventoryManager bbim = (BloodBankInventoryManager) comboBloodBank.getSelectedItem();
+        //bbim.getWorkQueue().getWorkRequestList().add(request);
+        Organization org = null;
+        Enterprise ent = null;
+        for (Enterprise e1 : enterprise.getNetwork().getEnterpriseDirectory().getEnterpriseList()){
+            if (e1 instanceof BloodBankEnterprise){
+                ent = e1;
+                for(Organization o1: ent.getOrganizationDirectory().getOrganizationList())
+                {
+                    if(o1 instanceof BloodBankInventoryManagerOrganization)
+                    {
+                        org = o1;
+                        break;
+                    }
+                }
+                break;
+            }
+        }
+        if (org!=null){
+            org.getWorkQueue().getWorkRequestList().add(request);
+            //userAccount.getWorkQueue().getWorkRequestList().add(request);
+      //  }
+        //organization.getWorkQueue().getWorkRequestList().add(request);
         account.getWorkQueue().getWorkRequestList().add(request);
-        business.getWorkQueue().getWorkRequestList().add(request);
+        //business.getWorkQueue().getWorkRequestList().add(request);
         him.getWorkQueue().getWorkRequestList().add(request);
+        }
         populateWorkQueueTable();
 
     }//GEN-LAST:event_reqBtnActionPerformed

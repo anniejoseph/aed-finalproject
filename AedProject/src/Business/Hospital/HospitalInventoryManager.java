@@ -6,6 +6,7 @@
 package Business.Hospital;
 
 import Business.BloodBank.BloodGroup;
+import Business.Employee.Person;
 import Business.WorkQueue.WorkQueue;
 import java.util.ArrayList;
 
@@ -13,7 +14,7 @@ import java.util.ArrayList;
  *
  * @author JAGTAP
  */
-public class HospitalInventoryManager {
+public class HospitalInventoryManager extends Person{
     
     private ArrayList<BloodGroup> listOfBloodGroup;
     private String name;

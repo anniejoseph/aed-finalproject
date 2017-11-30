@@ -9,16 +9,17 @@ import Business.BloodBank.BloodBankInventoryManager;
 import Business.BloodBank.BloodGroup;
 import Business.EcoSystem;
 import Business.Enterprise.Enterprise;
-import Business.Hospital.HospitalInventoryManager;
 import Business.Organization.BloodBankInventoryManagerOrganization;
-import Business.Organization.HospInventoryManagerOrganization;
 import Business.UserAccount.UserAccount;
 import Business.WorkQueue.BloodBankWQ;
 import Business.WorkQueue.WorkQueue;
 import Business.WorkQueue.WorkRequest;
+import java.awt.Color;
+import java.awt.Component;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
 
 /**
  *
@@ -40,17 +41,18 @@ public class BloodBankInventoryManagerWorkAreaJPanel extends javax.swing.JPanel 
         this.userProcessContainer = userProcessContainer;
         this.enterprise = enterprise;
         this.account=account;
+        him=(BloodBankInventoryManager)this.account.getEmployee().getP();
         this.business=business;
         this.organization= organization;
         
-        for(BloodBankInventoryManager him1 : organization.getListOfBloodBankInventoryManager())
+        /*for(BloodBankInventoryManager him1 : organization.getListOfBloodBankInventoryManager())
         {
             if (account.getEmployee().getName().equals(him1.getName()))
             {
                 him = him1;
                 
             }
-        }
+        }*/
         if (him.getWorkQueue() == null) {
             WorkQueue w = new WorkQueue();
             him.setWorkQueue(w);
@@ -75,15 +77,24 @@ public class BloodBankInventoryManagerWorkAreaJPanel extends javax.swing.JPanel 
 
         model.setRowCount(0);
 
-        for (WorkRequest work : him.getWorkQueue().getWorkRequestList()) {
+        for (WorkRequest work : organization.getWorkQueue().getWorkRequestList()) {
             if (work instanceof BloodBankWQ) {
-                Object[] row = new Object[5];
-                row[0] = ((BloodBankWQ) work).getBloodGroup().getName();
-                row[1] = ((BloodBankWQ) work).getQuant();
-                row[2] = work;
-                row[3] = work.getReceiver();
-                row[4] = work.getSender();
-                model.addRow(row);
+                if((work.getStatus()=="Requested") ||
+                    (work.getStatus()=="Pending" && work.getReceiver().getUsername().equals(account.getUsername())))
+                {
+                    Object[] row = new Object[5];
+                    row[0] = ((BloodBankWQ) work).getBloodGroup().getName();
+                    row[1] = ((BloodBankWQ) work).getQuant();
+                    row[2] = work;
+                    row[3] = work.getReceiver();
+                    row[4] = work.getSender();
+                     if(work.getStatus()=="Pending")
+                    {
+                        model.addRow(row);
+                    }
+                     else
+                    model.addRow(row);
+                }
             }
         }
     }
@@ -120,7 +131,20 @@ public class BloodBankInventoryManagerWorkAreaJPanel extends javax.swing.JPanel 
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        requestTable = new javax.swing.JTable();
+        requestTable = new javax.swing.JTable(){
+            public Component prepareRenderer(TableCellRenderer renderer, int row, int col) {
+                Component c = super.prepareRenderer(renderer, row, col);
+                BloodBankWQ p = (BloodBankWQ) getValueAt(row, 2);
+                if ("Pending".equals(p.getStatus())) {
+                    c.setBackground(Color.RED);
+                    c.setForeground(Color.BLACK);
+                } else {
+                    c.setBackground(super.getBackground());
+                    c.setForeground(super.getForeground());
+                }
+                return c;
+            }
+        };
         comboVaccine = new javax.swing.JComboBox();
         txtquant = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
@@ -368,6 +392,7 @@ public class BloodBankInventoryManagerWorkAreaJPanel extends javax.swing.JPanel 
                         JOptionPane.showMessageDialog(null, "No Stock available. Request from Supplier");
                         return;
                     }
+                    boolean f=false;
                     for (BloodGroup v : him.getListOfBloodGroup()) {
                         if (p.getBloodGroup().getName().equals(v.getName())) {
                             if (v.getQuant() - p.getQuant() < 0) {
@@ -375,10 +400,14 @@ public class BloodBankInventoryManagerWorkAreaJPanel extends javax.swing.JPanel 
                                 return;
                             }
                             v.setQuant(v.getQuant() - p.getQuant());
-                        }// else {
-                            // JOptionPane.showMessageDialog(null, "No Stock available. Request from Supplier.");
-                            //}
+                            f=true;
+                        }
+                        
                     }
+                    if(f==false) {
+                             JOptionPane.showMessageDialog(null, "No Stock available");
+                             return;
+                        }
                     p.setStatus("Complete");
                     JOptionPane.showMessageDialog(null, "You have successfully completed the request");
                     populateWorkQueueTable();

@@ -212,9 +212,9 @@ public class HospitalManageUserAccountJPanel extends javax.swing.JPanel {
             Role role = (Role) roleJComboBox.getSelectedItem();
             
             if (organization instanceof HospInventoryManagerOrganization){
-                HospitalInventoryManager s= new HospitalInventoryManager();
+                HospitalInventoryManager s= (HospitalInventoryManager) employee.getP();
             
-           s.setName(employee.getName());
+           //s.setName(employee.getName());
            ((HospInventoryManagerOrganization) organization).getListOfHospitalInventoryManager().add(s);
           
         }

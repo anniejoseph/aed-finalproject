@@ -221,9 +221,9 @@ public class BloodBankManageUserAccountJPanel extends javax.swing.JPanel {
                 //
                 //        }
             if (organization instanceof BloodBankInventoryManagerOrganization){
-                BloodBankInventoryManager s= new BloodBankInventoryManager();
+                BloodBankInventoryManager s= (BloodBankInventoryManager)employee.getP();
 
-                s.setName(employee.getName());
+                //s.setName(employee.getName());
                 ((BloodBankInventoryManagerOrganization) organization).getListOfBloodBankInventoryManager().add(s);
 
             }

@@ -5,10 +5,75 @@
  */
 package Business.Patient;
 
+import Business.Employee.Person;
+import Business.UserAccount.UserAccount;
+import java.util.ArrayList;
+
 /**
  *
  * @author JAGTAP
  */
-public class Patient {
+public class Patient extends Person{
     
+    private String ID;
+    private ArrayList<Person> poc;
+    private MedicalData medicalData;
+    private boolean death;
+   // private UserAccount ua;
+    
+    public Patient()
+    {
+        poc = new ArrayList<>();
+        medicalData=new MedicalData();
+        death=false;
+    }
+
+    public String getID() {
+        return ID;
+    }
+
+    public void setID(String ID) {
+        this.ID = ID;
+    }
+
+    public ArrayList<Person> getPoc() {
+        return poc;
+    }
+
+    public void setPoc(ArrayList<Person> poc) {
+        this.poc = poc;
+    }
+
+    public MedicalData getMedicalHistory() {
+        return medicalData;
+    }
+
+    public void setMedicalHistory(MedicalData medicalData) {
+        this.medicalData = medicalData;
+    }
+
+    public MedicalData getMedicalData() {
+        return medicalData;
+    }
+
+    public void setMedicalData(MedicalData medicalData) {
+        this.medicalData = medicalData;
+    }
+
+    public boolean isDeath() {
+        return death;
+    }
+
+    public void setDeath(boolean death) {
+        this.death = death;
+    }
+
+   /* public UserAccount getUa() {
+        return ua;
+    }
+
+    public void setUa(UserAccount ua) {
+        this.ua = ua;
+    }*/
+   
 }

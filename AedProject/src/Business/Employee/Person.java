@@ -3,7 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Business.Patient;
+package Business.Employee;
+
+import java.util.Date;
 
 /**
  *
@@ -11,32 +13,25 @@ package Business.Patient;
  */
 public class Person {
     
-    private String firstName;
-    private String lastName;
+    private String name;
     private String Address;
     private String phNum;
-    private Person poc;
+    private String gender;
+    private String dob;
+    //private Person poc;
     
-    public Person()
+   /* public Person()
     {
         poc = new  Person();
+    }*/
+
+    public String getName() {
+        return name;
     }
 
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
+    public void setName(String name) {
+        this.name = name;
+    } 
 
     public String getAddress() {
         return Address;
@@ -54,12 +49,31 @@ public class Person {
         this.phNum = phNum;
     }
 
+    /*
     public Person getPoc() {
         return poc;
     }
 
     public void setPoc(Person poc) {
         this.poc = poc;
+    }*/
+
+    public String getGender() {
+        return gender;
     }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public String getDob() {
+        return dob;
+    }
+
+    public void setDob(String dob) {
+        this.dob = dob;
+    }
+
+    
     
 }

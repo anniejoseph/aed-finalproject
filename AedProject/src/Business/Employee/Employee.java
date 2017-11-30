@@ -14,10 +14,12 @@ public class Employee {
     private String name;
     private int id;
     private static int count = 1;
+    private Person p;
 
     public Employee() {
         id = count;
         count++;
+       // p=new Person();
     }
 
     public int getId() {
@@ -37,5 +39,22 @@ public class Employee {
     public String toString() {
         return name;
     }
+
+    public static int getCount() {
+        return count;
+    }
+
+    public static void setCount(int count) {
+        Employee.count = count;
+    }
+
+    public Person getP() {
+        return p;
+    }
+
+    public void setP(Person p) {
+        this.p = p;
+    }
+    
     
 }

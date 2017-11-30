@@ -7,6 +7,7 @@ package UserInterface.SystemAdminWorkAreas;
 
 import Business.EcoSystem;
 import Business.Employee.Employee;
+import Business.Employee.Person;
 import Business.Enterprise.Enterprise;
 import Business.Network.Network;
 import Business.Role.BloodBankAdminRole;
@@ -82,6 +83,7 @@ public class ManageEnterpriseAdminJPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        gengerGroup = new javax.swing.ButtonGroup();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         enterpriseJTable = new javax.swing.JTable();
@@ -98,6 +100,16 @@ public class ManageEnterpriseAdminJPanel extends javax.swing.JPanel {
         passwordJPasswordField = new javax.swing.JPasswordField();
         backJButton = new javax.swing.JButton();
         btnDelete = new javax.swing.JButton();
+        addressTextField = new javax.swing.JTextField();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        phNumTextField = new javax.swing.JTextField();
+        jLabel8 = new javax.swing.JLabel();
+        dobTextField = new javax.swing.JTextField();
+        jLabel9 = new javax.swing.JLabel();
+        maleRadioButton = new javax.swing.JRadioButton();
+        femaleRadioButton = new javax.swing.JRadioButton();
+        donotRadioButton = new javax.swing.JRadioButton();
 
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -151,7 +163,7 @@ public class ManageEnterpriseAdminJPanel extends javax.swing.JPanel {
                 submitJButtonActionPerformed(evt);
             }
         });
-        jPanel1.add(submitJButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(347, 432, -1, -1));
+        jPanel1.add(submitJButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 460, -1, -1));
 
         jLabel4.setText("Password");
         jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(88, 334, -1, -1));
@@ -167,15 +179,42 @@ public class ManageEnterpriseAdminJPanel extends javax.swing.JPanel {
                 backJButtonActionPerformed(evt);
             }
         });
-        jPanel1.add(backJButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(12, 423, -1, -1));
+        jPanel1.add(backJButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 460, -1, -1));
 
-        btnDelete.setText("Delete request");
+        btnDelete.setText("Delete");
         btnDelete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnDeleteActionPerformed(evt);
             }
         });
         jPanel1.add(btnDelete, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 160, -1, -1));
+        jPanel1.add(addressTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 290, 120, -1));
+
+        jLabel6.setText("Address");
+        jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 290, -1, -1));
+
+        jLabel7.setText("Phone number");
+        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 330, -1, -1));
+        jPanel1.add(phNumTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 330, 120, -1));
+
+        jLabel8.setText("DOB (mm/dd/yyyy)");
+        jPanel1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 374, -1, 10));
+        jPanel1.add(dobTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 370, 120, -1));
+
+        jLabel9.setText("Gender");
+        jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 410, -1, -1));
+
+        gengerGroup.add(maleRadioButton);
+        maleRadioButton.setText("male");
+        jPanel1.add(maleRadioButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 410, -1, -1));
+
+        gengerGroup.add(femaleRadioButton);
+        femaleRadioButton.setText("female");
+        jPanel1.add(femaleRadioButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 410, -1, -1));
+
+        gengerGroup.add(donotRadioButton);
+        donotRadioButton.setText("Do not wish to disclose");
+        jPanel1.add(donotRadioButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 410, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -209,8 +248,24 @@ public class ManageEnterpriseAdminJPanel extends javax.swing.JPanel {
         String username = usernameJTextField.getText();
         String password = String.valueOf(passwordJPasswordField.getPassword());
         String name = nameJTextField.getText();
-
+        String gender;
+        if(maleRadioButton.isSelected())
+            gender = "M";
+        else if (femaleRadioButton.isSelected())
+            gender="F";
+        else
+            gender="NA";
+        String Address= addressTextField.getText();
+        String Phnum = phNumTextField.getText();
+        String dob = dobTextField.getText();
         Employee employee = enterprise.getEmployeeDirectory().createEmployee(name);
+        Person p= new Person();
+        p.setAddress(Address);
+        p.setDob(dob);
+        p.setGender(gender);
+        p.setName(name);
+        p.setPhNum(Phnum);
+        employee.setP(p);
         if (EcoSystem.checkIfUsernameIsUnique(username)) {
             UserAccount account = null;
             if (enterprise.getEnterpriseType() == Enterprise.EnterpriseType.BloodBank) {
@@ -269,20 +324,31 @@ public class ManageEnterpriseAdminJPanel extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField addressTextField;
     private javax.swing.JButton backJButton;
     private javax.swing.JButton btnDelete;
+    private javax.swing.JTextField dobTextField;
+    private javax.swing.JRadioButton donotRadioButton;
     private javax.swing.JComboBox enterpriseJComboBox;
     private javax.swing.JTable enterpriseJTable;
+    private javax.swing.JRadioButton femaleRadioButton;
+    private javax.swing.ButtonGroup gengerGroup;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JRadioButton maleRadioButton;
     private javax.swing.JTextField nameJTextField;
     private javax.swing.JComboBox networkJComboBox;
     private javax.swing.JPasswordField passwordJPasswordField;
+    private javax.swing.JTextField phNumTextField;
     private javax.swing.JButton submitJButton;
     private javax.swing.JTextField usernameJTextField;
     // End of variables declaration//GEN-END:variables

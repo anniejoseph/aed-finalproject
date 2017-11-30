@@ -6,6 +6,7 @@
 package Business.UserAccount;
 
 import Business.Employee.Employee;
+import Business.Employee.Person;
 import Business.Role.Role;
 import Business.WorkQueue.WorkQueue;
 
@@ -20,9 +21,11 @@ public class UserAccount {
     private Employee employee;
     private Role role;
     private WorkQueue workQueue;
+   // private Person p;
 
     public UserAccount() {
         workQueue = new WorkQueue();
+       // p=new Person();
     }
     
     
@@ -63,12 +66,17 @@ public class UserAccount {
         return workQueue;
     }
 
-    
-    
+    /*public Person getP() {
+        return p;
+    }
+
+    public void setP(Person p) {
+        this.p = p;
+    }*/
+
     @Override
     public String toString() {
         return username;
     }
-    
-    
+       
 }

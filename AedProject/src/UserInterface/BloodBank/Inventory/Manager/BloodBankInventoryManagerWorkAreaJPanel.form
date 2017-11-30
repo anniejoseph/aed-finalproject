@@ -178,6 +178,9 @@
                   <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
                 </Property>
               </Properties>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JTable(){&#xa;    public Component prepareRenderer(TableCellRenderer renderer, int row, int col) {&#xa;        Component c = super.prepareRenderer(renderer, row, col);&#xa;        BloodBankWQ p = (BloodBankWQ) getValueAt(row, 2);&#xa;        if (&quot;Pending&quot;.equals(p.getStatus())) {&#xa;            c.setBackground(Color.RED);&#xa;            c.setForeground(Color.BLACK);&#xa;        } else {&#xa;            c.setBackground(super.getBackground());&#xa;            c.setForeground(super.getForeground());&#xa;        }&#xa;        return c;&#xa;    }&#xa;}"/>
+              </AuxValues>
             </Component>
           </SubComponents>
         </Container>
