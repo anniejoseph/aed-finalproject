@@ -41,6 +41,11 @@ public class EnterpriseDirectory {
             enterprise = new OrganDonationEnterprise(name);
             enterpriseList.add(enterprise);
         }
+        else  if (type == Enterprise.EnterpriseType.Lab){
+            enterprise = new LabEnterprise(name);
+            enterpriseList.add(enterprise);
+        }
+        
         return enterprise;
     }
 }

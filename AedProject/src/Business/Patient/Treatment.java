@@ -6,7 +6,11 @@
 package Business.Patient;
 
 import Business.Hospital.Doctor;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -14,7 +18,7 @@ import java.util.Date;
  */
 public class Treatment {
     
-    private Date date;
+    private String date;
     private Doctor doctor;
     private String shortDescription;
     private String comments;
@@ -22,15 +26,24 @@ public class Treatment {
     public Treatment()
     {
         doctor=new Doctor();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MM-dd-yyyy");
+        try {
+           // date = String.valueOf((Date)(dateFormat.parse(dateFormat.format(new Date()))));
+           date = dateFormat.format(new Date());
+        } 
+        catch (Exception ex) {
+            Logger.getLogger(VitalSigns.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
+
 
     public Doctor getDoctor() {
         return doctor;
@@ -55,5 +68,9 @@ public class Treatment {
     public void setComments(String comments) {
         this.comments = comments;
     }
-    
+    @Override
+    public String toString()
+    {
+        return date;
+    }
 }

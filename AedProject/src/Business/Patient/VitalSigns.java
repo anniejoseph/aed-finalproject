@@ -5,7 +5,12 @@
  */
 package Business.Patient;
 
+import Business.Hospital.Doctor;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -13,22 +18,28 @@ import java.util.Date;
  */
 public class VitalSigns {
     
-    private Date date;
+    private String date;
     private float bp;
     private float temp;
     private float pluseRate;
     private float respirationRate;
+    private Doctor d;
     
     public VitalSigns()
     {
-        date = new Date();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MM-dd-yyyy");
+        try {
+            date = String.valueOf(dateFormat.parse(dateFormat.format(new Date())));
+        } catch (ParseException ex) {
+            Logger.getLogger(VitalSigns.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
@@ -63,9 +74,12 @@ public class VitalSigns {
     public void setRespirationRate(float respirationRate) {
         this.respirationRate = respirationRate;
     }
-    
-    
-            
-    
-    
+
+    public Doctor getD() {
+        return d;
+    }
+
+    public void setD(Doctor d) {
+        this.d = d;
+    }   
 }

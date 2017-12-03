@@ -76,27 +76,22 @@ public class BloodBankInventoryManagerWorkAreaJPanel extends javax.swing.JPanel 
         DefaultTableModel model = (DefaultTableModel) requestTable.getModel();
 
         model.setRowCount(0);
-
-        for (WorkRequest work : organization.getWorkQueue().getWorkRequestList()) {
-            if (work instanceof BloodBankWQ) {
-                if((work.getStatus()=="Requested") ||
-                    (work.getStatus()=="Pending" && work.getReceiver().getUsername().equals(account.getUsername())))
-                {
-                    Object[] row = new Object[5];
-                    row[0] = ((BloodBankWQ) work).getBloodGroup().getName();
-                    row[1] = ((BloodBankWQ) work).getQuant();
-                    row[2] = work;
-                    row[3] = work.getReceiver();
-                    row[4] = work.getSender();
-                     if(work.getStatus()=="Pending")
+//        if(organization.getWorkQueue().getWorkRequestList().size()!=0)
+            for (WorkRequest work : organization.getWorkQueue().getWorkRequestList()) {
+                if (work instanceof BloodBankWQ) {
+                    if((work.getStatus()=="Requested") ||
+                        (work.getStatus()=="Pending" && work.getReceiver().getUsername().equals(account.getUsername())))
                     {
+                        Object[] row = new Object[4];
+                        row[0] = ((BloodBankWQ) work).getBloodGroup().getName();
+                        row[1] = ((BloodBankWQ) work).getQuant();
+                        row[2] = work;
+                        row[3] = work.getReceiver();
+                        //row[4] = work.getSender();
                         model.addRow(row);
                     }
-                     else
-                    model.addRow(row);
                 }
             }
-        }
     }
 
     public void populateAvailable() {

@@ -25,7 +25,9 @@ public abstract class Role {
         HospitalInventoryManager("HospitalInventoryManager"),
         BloodBankAdmin("BloodBankAdmin"),
         BloodBankInventoryManager("BloodBankInventoryManager"),
-        Doctor("Doctor");
+        Doctor("Doctor"),
+        LabAdmin("LabAdmin"),
+        LabAssistant("LabAssistant");
         
         
         

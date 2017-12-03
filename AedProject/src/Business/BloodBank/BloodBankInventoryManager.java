@@ -61,6 +61,7 @@ public class BloodBankInventoryManager extends Person {
         this.id = id;
     }
     
+    @Override
     public String toString()
     {
         return name;

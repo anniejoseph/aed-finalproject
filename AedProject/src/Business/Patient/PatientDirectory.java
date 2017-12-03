@@ -35,4 +35,15 @@ public class PatientDirectory {
         this.listOfPatient = listOfPatient;
     }
 
+    public boolean checkPatientId(String id)
+    {
+        for(Patient p:listOfPatient)
+        {
+            if(p.getID().equals(id))
+            {
+                return false;
+            }
+        }
+        return true;
+    }
 }

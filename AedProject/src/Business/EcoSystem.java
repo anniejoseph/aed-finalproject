@@ -92,5 +92,13 @@ public class EcoSystem extends Organization{
 
         return true;
     }
+
+    public PatientDirectory getPatientDirectory() {
+        return patientDirectory;
+    }
+
+    public void setPatientDirectory(PatientDirectory patientDirectory) {
+        this.patientDirectory = patientDirectory;
+    }
     
 }

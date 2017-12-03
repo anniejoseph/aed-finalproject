@@ -3,7 +3,9 @@ package UserInterface.Hospital;
 import Business.EcoSystem;
 import Business.Employee.Employee;
 import Business.Enterprise.Enterprise;
+import Business.Hospital.Doctor;
 import Business.Hospital.HospitalInventoryManager;
+import Business.Organization.DoctorOrganization;
 import Business.Organization.HospInventoryManagerOrganization;
 import Business.Organization.Organization;
 import Business.Role.Role;
@@ -211,13 +213,16 @@ public class HospitalManageUserAccountJPanel extends javax.swing.JPanel {
             Employee employee = (Employee) employeeJComboBox.getSelectedItem();
             Role role = (Role) roleJComboBox.getSelectedItem();
             
-            if (organization instanceof HospInventoryManagerOrganization){
+            if (organization instanceof HospInventoryManagerOrganization)
+            {
                 HospitalInventoryManager s= (HospitalInventoryManager) employee.getP();
-            
-           //s.setName(employee.getName());
-           ((HospInventoryManagerOrganization) organization).getListOfHospitalInventoryManager().add(s);
-          
-        }
+                ((HospInventoryManagerOrganization) organization).getListOfHospitalInventoryManager().add(s);
+            }
+            else
+            {
+                Doctor d = (Doctor) employee.getP();
+                ((DoctorOrganization) organization).getListOfDoctor().add(d);
+            }
 
             organization.getUserAccountDirectory().createUserAccount(userName, password, employee, role);
 

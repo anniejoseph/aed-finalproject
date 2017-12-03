@@ -5,6 +5,7 @@
  */
 package Business.Enterprise;
 
+import Business.Role.DoctorRole;
 import Business.Role.HospitalInventoryAdminRole;
 import Business.Role.HospitalInventoryManagerRole;
 import Business.Role.Role;
@@ -23,6 +24,7 @@ public class HospitalEnterprise extends Enterprise{
     @Override
     public HashSet<Role> getSupportedRole() {
         roles.add(new HospitalInventoryManagerRole());
+        roles.add(new DoctorRole());
         return roles;
     }
     

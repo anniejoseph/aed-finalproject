@@ -36,6 +36,7 @@ public class HospitalManageOrganizationJPanel extends javax.swing.JPanel {
       //  for (Type type : Organization.Type.values()){
        //     if (!type.getValue().equals(Type.Clinic.getValue()))
                 organizationJComboBox.addItem(Organization.Type.HospInventoryManager);
+                organizationJComboBox.addItem(Organization.Type.Doctor);
       //  }
     }
 

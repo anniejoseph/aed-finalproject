@@ -13,6 +13,7 @@ import Business.Network.Network;
 import Business.Role.BloodBankAdminRole;
 import Business.Role.HospitalAdminRole;
 import Business.Role.InsuranceAdminRole;
+import Business.Role.LabAdminRole;
 import Business.Role.OrganDonationAdminRole;
 import Business.UserAccount.UserAccount;
 import java.awt.CardLayout;
@@ -277,6 +278,9 @@ public class ManageEnterpriseAdminJPanel extends javax.swing.JPanel {
             }
             else if (enterprise.getEnterpriseType() == Enterprise.EnterpriseType.OrganDonation) {
                 account = enterprise.getUserAccountDirectory().createUserAccount(username, password, employee, new OrganDonationAdminRole());
+            }
+            else {
+                account = enterprise.getUserAccountDirectory().createUserAccount(username, password, employee, new LabAdminRole());
             }
 
             populateTable();

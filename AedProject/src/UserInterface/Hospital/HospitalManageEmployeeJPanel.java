@@ -8,7 +8,9 @@ package UserInterface.Hospital;
 import Business.BloodBank.BloodBankInventoryManager;
 import Business.Employee.Employee;
 import Business.Employee.Person;
+import Business.Hospital.Doctor;
 import Business.Hospital.HospitalInventoryManager;
+import Business.Organization.HospInventoryManagerOrganization;
 import Business.Organization.Organization;
 import Business.Organization.OrganizationDirectory;
 import java.awt.CardLayout;
@@ -217,7 +219,11 @@ public class HospitalManageEmployeeJPanel extends javax.swing.JPanel {
         String Phnum = phNumTextField.getText();
         String dob = dobTextField.getText();
         Employee employee = organization.getEmployeeDirectory().createEmployee(name);
-        Person p = new HospitalInventoryManager();
+        Person p = null;
+        if(organization instanceof HospInventoryManagerOrganization)
+            p = new HospitalInventoryManager();
+        else
+            p = new Doctor();
         p.setAddress(Address);
         p.setDob(dob);
         p.setGender(gender);

@@ -35,12 +35,13 @@ public class HospInventoryManagerOrganization extends Organization{
         return listOfHospitalInventoryManager;
     }
     
-    public HospitalInventoryManager addHospitalInventoryManager(){
+   /* public HospitalInventoryManager addHospitalInventoryManager(){
         HospitalInventoryManager hospitalInventoryManager = new HospitalInventoryManager();
         listOfHospitalInventoryManager.add(hospitalInventoryManager);
         return hospitalInventoryManager;
-    }
+    }*/
     
+    @Override
     public String toString()
     {
         return super.getName();

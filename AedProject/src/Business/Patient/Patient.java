@@ -19,12 +19,14 @@ public class Patient extends Person{
     private ArrayList<Person> poc;
     private MedicalData medicalData;
     private boolean death;
+    private ArrayList<MedicalTest> listOfMedicalTests;
    // private UserAccount ua;
     
     public Patient()
     {
         poc = new ArrayList<>();
         medicalData=new MedicalData();
+        listOfMedicalTests=new ArrayList<>();
         death=false;
     }
 
@@ -67,6 +69,8 @@ public class Patient extends Person{
     public void setDeath(boolean death) {
         this.death = death;
     }
+    
+    
 
    /* public UserAccount getUa() {
         return ua;
@@ -75,5 +79,19 @@ public class Patient extends Person{
     public void setUa(UserAccount ua) {
         this.ua = ua;
     }*/
+
+    public ArrayList<MedicalTest> getListOfMedicalTests() {
+        return listOfMedicalTests;
+    }
+
+    public void setListOfMedicalTests(ArrayList<MedicalTest> listOfMedicalTests) {
+        this.listOfMedicalTests = listOfMedicalTests;
+    }
    
+    public MedicalTest addMedicalTest()
+    {
+        MedicalTest mt=new MedicalTest();
+        listOfMedicalTests.add(mt);
+        return mt;
+    }
 }

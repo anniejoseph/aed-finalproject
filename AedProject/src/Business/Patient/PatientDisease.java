@@ -5,8 +5,12 @@
  */
 package Business.Patient;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -15,15 +19,23 @@ import java.util.Date;
 public class PatientDisease {
     
     private String name;
-    private Date detectedDate;
+    private String detectedDate;
     private ArrayList<Treatment> listOfTreatment;
     private boolean cured;
     private boolean death;
+    private String shortDescription;
     
     public PatientDisease()
     {
         listOfTreatment=new ArrayList<>();
         cured=false;
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MM-dd-yyyy");
+        try {
+            detectedDate = String.valueOf(dateFormat.parse(dateFormat.format(new Date())));
+        } 
+        catch (ParseException ex) {
+            Logger.getLogger(VitalSigns.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public String getName() {
@@ -34,13 +46,15 @@ public class PatientDisease {
         this.name = name;
     }
 
-    public Date getDetectedDate() {
+    public String getDetectedDate() {
         return detectedDate;
     }
 
-    public void setDetectedDate(Date detectedDate) {
+    public void setDetectedDate(String detectedDate) {
         this.detectedDate = detectedDate;
     }
+
+    
 
     public ArrayList<Treatment> getListOfTreatment() {
         return listOfTreatment;
@@ -65,7 +79,13 @@ public class PatientDisease {
     public void setDeath(boolean death) {
         this.death = death;
     }
-    
-    
+
+    public String getShortDescription() {
+        return shortDescription;
+    }
+
+    public void setShortDescription(String shortDescription) {
+        this.shortDescription = shortDescription;
+    }
     
 }

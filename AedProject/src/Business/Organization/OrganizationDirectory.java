@@ -46,6 +46,10 @@ public class OrganizationDirectory {
             organization = new OrganDonationManagerOrganization();
             organizationList.add(organization);
         }
+        else if (type.getValue().equals(Organization.Type.LabAssistant.getValue())){
+            organization = new LabAssistantOrganization();
+            organizationList.add(organization);
+        }
         return organization;
     }
     

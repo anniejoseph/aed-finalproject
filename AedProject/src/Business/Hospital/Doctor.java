@@ -18,11 +18,13 @@ public class Doctor extends Person{
     
     private int id;
     private PatientDirectory docPatientDirectory;
+    private static int count;
     //private UserAccount ua;
     
     public Doctor()
     {
         docPatientDirectory=new PatientDirectory();
+        id=count;
     }
 
     public int getId() {

@@ -27,7 +27,7 @@ public abstract class Organization {
     
     public enum Type{
         InsuranceManager("InsuranceManager Organization"),Doctor("Doctor Organization"),HospInventoryManager("HospitalInventoryManager Organization"),
-        BloodBankInventoryManager("BloodBankInventoryManager Organization"),OrganDonationManager("OrganDonationManager Organization");
+        BloodBankInventoryManager("BloodBankInventoryManager Organization"),OrganDonationManager("OrganDonationManager Organization"),LabAssistant("LabAssistant Organization");
         private String value;
         private Type(String value) {
             this.value = value;

@@ -28,7 +28,7 @@ private Network network;
     }
     
     public enum EnterpriseType{
-        Hospital("Hospital"),BloodBank("BloodBank"), Insurance("Insurance"),OrganDonation("OrganDonation");
+        Hospital("Hospital"),BloodBank("BloodBank"), Insurance("Insurance"),OrganDonation("OrganDonation"),Lab("Lab");
         
         private String value;
 

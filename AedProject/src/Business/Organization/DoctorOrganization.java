@@ -5,7 +5,10 @@
  */
 package Business.Organization;
 
+import Business.Hospital.Doctor;
+import Business.Role.DoctorRole;
 import Business.Role.Role;
+import java.util.ArrayList;
 import java.util.HashSet;
 
 /**
@@ -14,13 +17,20 @@ import java.util.HashSet;
  */
 public class DoctorOrganization extends Organization{
 
+    private ArrayList<Doctor> listOfDoctor;
     public DoctorOrganization() {
         super(Type.Doctor.getValue());
+        listOfDoctor=new ArrayList<>();
     }
 
     @Override
     public HashSet<Role> getSupportedRole() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        roles.add(new DoctorRole());
+        return roles;
+    }
+
+    public ArrayList<Doctor> getListOfDoctor() {
+        return listOfDoctor;
     }
     
     @Override

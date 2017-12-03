@@ -15,11 +15,15 @@ public class MedicalData {
     
     private ArrayList<PatientDisease> listOfDisease;
     private ArrayList<VitalSigns> listOfVitalSigns;
+    private ArrayList<Disability> listOfDisability;
+    private ArrayList<MedicalTest> listOfMedicalTests;
     
     public MedicalData()
     {
         listOfDisease=new ArrayList<>();
         listOfVitalSigns=new ArrayList<>();
+        listOfDisability=new ArrayList<>();
+        listOfMedicalTests=new ArrayList<>();
     }
 
     public ArrayList<PatientDisease> getListOfDisease() {
@@ -36,6 +40,22 @@ public class MedicalData {
 
     public void setListOfVitalSigns(ArrayList<VitalSigns> listOfVitalSigns) {
         this.listOfVitalSigns = listOfVitalSigns;
+    }
+
+    public ArrayList<Disability> getListOfDisability() {
+        return listOfDisability;
+    }
+
+    public void setListOfDisability(ArrayList<Disability> listOfDisability) {
+        this.listOfDisability = listOfDisability;
+    }
+
+    public ArrayList<MedicalTest> getListOfMedicalTests() {
+        return listOfMedicalTests;
+    }
+
+    public void setListOfMedicalTests(ArrayList<MedicalTest> listOfMedicalTests) {
+        this.listOfMedicalTests = listOfMedicalTests;
     }
     
     
