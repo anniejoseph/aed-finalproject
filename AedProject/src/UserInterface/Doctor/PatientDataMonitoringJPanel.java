@@ -99,8 +99,10 @@ public class PatientDataMonitoringJPanel extends javax.swing.JPanel {
                         row[1]=mt;
                         row[2]=mt.getResult();
                         dtm.addRow(row);
+                        //patient.getListOfMedicalTests().remove(mt);
                        // }
                     }
+                    
     }
     public void populateVitalSigns()
     {
@@ -985,7 +987,6 @@ public class PatientDataMonitoringJPanel extends javax.swing.JPanel {
         jTabbedPane1.addTab("Medical Tests", jPanel5);
 
         aidsRadioButton.setText("AIDS");
-        aidsRadioButton.setEnabled(false);
         aidsRadioButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 aidsRadioButtonActionPerformed(evt);
@@ -993,31 +994,22 @@ public class PatientDataMonitoringJPanel extends javax.swing.JPanel {
         });
 
         boneCancerRadioButton.setText("Bone Cancer");
-        boneCancerRadioButton.setEnabled(false);
 
         heartAttackRadioButton.setText("Heart");
-        heartAttackRadioButton.setEnabled(false);
 
         paralysisRadioButton.setText("Paralysis");
-        paralysisRadioButton.setEnabled(false);
 
         diabetesRadioButton.setText("Diabetes");
-        diabetesRadioButton.setEnabled(false);
 
         breastRadioButton.setText("Breast Cancer");
-        breastRadioButton.setEnabled(false);
 
         brainRadioButton.setText("Brain Tumor");
-        brainRadioButton.setEnabled(false);
 
         gastricRadioButton.setText("Gastric Cancer");
-        gastricRadioButton.setEnabled(false);
 
         liverRadioButton.setText("Liver Cancer");
-        liverRadioButton.setEnabled(false);
 
         lungRadioButton.setText("Lung Cancer");
-        lungRadioButton.setEnabled(false);
 
         jLabel21.setText("Short Description");
 
@@ -1274,9 +1266,7 @@ public class PatientDataMonitoringJPanel extends javax.swing.JPanel {
                             .addComponent(lungButton))
                         .addGap(6, 6, 6)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(jLabel23)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(jLabel23)
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addComponent(jLabel29)
                                 .addGap(8, 8, 8)
@@ -1510,6 +1500,7 @@ public class PatientDataMonitoringJPanel extends javax.swing.JPanel {
 
     private void loadButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadButtonActionPerformed
         // TODO add your handling code here:
+        int temp=0;
         if (patientIdTextField.getText().isEmpty())
             JOptionPane.showMessageDialog(null, "Please enter the id", "Error", 0);
         else
@@ -1653,12 +1644,12 @@ public class PatientDataMonitoringJPanel extends javax.swing.JPanel {
                     populateDisease();
                     populateVitalSigns();
                     populateMedicalTest();
-                    
+                    temp=1;
                     populateworkrequestable();
                 }
-                else
-                    JOptionPane.showMessageDialog(null, "Invalid Patient Id", "Error", 0);
             }
+            if(temp==0)
+                    JOptionPane.showMessageDialog(null, "Invalid Patient Id", "Error", 0);
         }
     }//GEN-LAST:event_loadButtonActionPerformed
 

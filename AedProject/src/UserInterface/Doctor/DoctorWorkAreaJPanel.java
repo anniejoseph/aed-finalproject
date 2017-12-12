@@ -52,7 +52,6 @@ public class DoctorWorkAreaJPanel extends javax.swing.JPanel {
         enterpriseLabel = new javax.swing.JLabel();
         patientJButton = new javax.swing.JButton();
         manageEmployeeJButton = new javax.swing.JButton();
-        userJButton = new javax.swing.JButton();
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabel1.setText("My Work Area -Doctor Role");
@@ -67,17 +66,10 @@ public class DoctorWorkAreaJPanel extends javax.swing.JPanel {
             }
         });
 
-        manageEmployeeJButton.setText("Manage Employee");
+        manageEmployeeJButton.setText("Request Organ");
         manageEmployeeJButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 manageEmployeeJButtonActionPerformed(evt);
-            }
-        });
-
-        userJButton.setText("Manage User");
-        userJButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                userJButtonActionPerformed(evt);
             }
         });
 
@@ -99,10 +91,7 @@ public class DoctorWorkAreaJPanel extends javax.swing.JPanel {
                             .addComponent(patientJButton))
                         .addGroup(layout.createSequentialGroup()
                             .addGap(120, 120, 120)
-                            .addComponent(manageEmployeeJButton, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(layout.createSequentialGroup()
-                            .addGap(120, 120, 120)
-                            .addComponent(userJButton, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(manageEmployeeJButton, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGap(0, 0, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
@@ -110,7 +99,7 @@ public class DoctorWorkAreaJPanel extends javax.swing.JPanel {
             .addGap(0, 500, Short.MAX_VALUE)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addGap(0, 72, Short.MAX_VALUE)
                     .addComponent(jLabel1)
                     .addGap(21, 21, 21)
                     .addComponent(enterpriseLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -118,9 +107,7 @@ public class DoctorWorkAreaJPanel extends javax.swing.JPanel {
                     .addComponent(patientJButton)
                     .addGap(27, 27, 27)
                     .addComponent(manageEmployeeJButton)
-                    .addGap(27, 27, 27)
-                    .addComponent(userJButton)
-                    .addGap(0, 0, Short.MAX_VALUE)))
+                    .addGap(0, 265, Short.MAX_VALUE)))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -134,21 +121,12 @@ public class DoctorWorkAreaJPanel extends javax.swing.JPanel {
 
     private void manageEmployeeJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_manageEmployeeJButtonActionPerformed
 
-        /*HospitalManageEmployeeJPanel manageEmployeeJPanel = new HospitalManageEmployeeJPanel(userProcessContainer, enterprise.getOrganizationDirectory());
-        userProcessContainer.add("HospitalManageEmployeeJPanel", manageEmployeeJPanel);
+        DoctorOrganRequest muajp = new DoctorOrganRequest(userProcessContainer,account,organization,enterprise,business);
+        userProcessContainer.add("DoctorOrganRequest", muajp);
 
         CardLayout layout = (CardLayout) userProcessContainer.getLayout();
-        layout.next(userProcessContainer);*/
+        layout.next(userProcessContainer);
     }//GEN-LAST:event_manageEmployeeJButtonActionPerformed
-
-    private void userJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_userJButtonActionPerformed
-        // TODO add your handling code here:
-        /*HospitalManageUserAccountJPanel muajp = new HospitalManageUserAccountJPanel(userProcessContainer, enterprise);
-        userProcessContainer.add("HospitalManageUserAccountJPanel", muajp);
-
-        CardLayout layout = (CardLayout) userProcessContainer.getLayout();
-        layout.next(userProcessContainer);*/
-    }//GEN-LAST:event_userJButtonActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -156,6 +134,5 @@ public class DoctorWorkAreaJPanel extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JButton manageEmployeeJButton;
     private javax.swing.JButton patientJButton;
-    private javax.swing.JButton userJButton;
     // End of variables declaration//GEN-END:variables
 }

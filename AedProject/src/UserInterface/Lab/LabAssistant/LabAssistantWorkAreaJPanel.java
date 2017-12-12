@@ -170,7 +170,7 @@ public class LabAssistantWorkAreaJPanel extends javax.swing.JPanel {
 
             p.setStatus("Pending");
             p.setReceiver(account);
-            requestTable.setEnabled(false);
+            //requestTable.setEnabled(false);
             populateTable();
 
         }
@@ -188,7 +188,7 @@ public class LabAssistantWorkAreaJPanel extends javax.swing.JPanel {
             if(p.getStatus()=="Pending")
             {
                 if(resultTextField.getText().isEmpty())
-                    JOptionPane.showInternalMessageDialog(null, "Please Enter the result", "Error", 0);
+                    JOptionPane.showMessageDialog(null, "Please Enter the result", "Error", 0);
                 else
                 {
                     p.setStatus("Complete");
@@ -197,7 +197,7 @@ public class LabAssistantWorkAreaJPanel extends javax.swing.JPanel {
                 }
             }
             else
-                JOptionPane.showInternalMessageDialog(null, "Selected requesed should be assigned First", "Error", 0);
+                JOptionPane.showMessageDialog(null, "Selected requesed should be assigned First", "Error", 0);
             requestTable.setEnabled(true);
             resultTextField.setText("");
         }
