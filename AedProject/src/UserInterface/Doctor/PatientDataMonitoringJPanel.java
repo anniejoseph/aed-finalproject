@@ -8,18 +8,24 @@ package UserInterface.Doctor;
 import Business.EcoSystem;
 import Business.Enterprise.Enterprise;
 import Business.Enterprise.LabEnterprise;
+import Business.Enterprise.InsuranceEnterprise;
 import Business.Hospital.Doctor;
 import Business.Organization.DoctorOrganization;
 import Business.Organization.LabAssistantOrganization;
+import Business.Organization.InsuranceManagerOrganization;
 import Business.Organization.Organization;
 import Business.Patient.Disability;
 import Business.Patient.MedicalTest;
+import Business.Patient.InsuranceDirectory;
+import Business.Insurance.Insurance;
+import Business.Insurance.InsuranceInventoryManager;
 import Business.Patient.Patient;
 import Business.Patient.PatientDisease;
 import Business.Patient.Treatment;
 import Business.Patient.VitalSigns;
 import Business.UserAccount.UserAccount;
 import Business.WorkQueue.Lab4DocWQ;
+import Business.WorkQueue.InsuranceWQ;
 import Business.WorkQueue.WorkRequest;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -35,9 +41,9 @@ public class PatientDataMonitoringJPanel extends javax.swing.JPanel {
      * Creates new form PatientDataMonitoringJPanel
      */
     JPanel userProcessContainer;
-    UserAccount account; 
-    DoctorOrganization organization; 
-    Enterprise enterprise; 
+    UserAccount account;
+    DoctorOrganization organization;
+    Enterprise enterprise;
     EcoSystem business;
     Doctor doctor;
     Patient patient;
@@ -51,27 +57,28 @@ public class PatientDataMonitoringJPanel extends javax.swing.JPanel {
     PatientDisease gastric;
     PatientDisease liver;
     PatientDisease lung;
-   // PatientDisease patientDisease;
-    int flag=0;
+    // PatientDisease patientDisease;
+    int flag = 0;
+
     public PatientDataMonitoringJPanel(JPanel userProcessContainer, UserAccount account, DoctorOrganization organization, Enterprise enterprise, EcoSystem business, Doctor d) {
         initComponents();
         this.userProcessContainer = userProcessContainer;
         this.enterprise = enterprise;
-        this.account=account;
-        this.business=business;
-        this.organization= organization;
-        this.doctor=d;
-        patient=null;
-        aids=null;
-        heart=null;
-        paralysis=null;
-        diabetes=null;
-        bone=null;
-        breast=null;
-        brain=null;
-        gastric=null;
-        liver=null;
-        lung=null;
+        this.account = account;
+        this.business = business;
+        this.organization = organization;
+        this.doctor = d;
+        patient = null;
+        aids = null;
+        heart = null;
+        paralysis = null;
+        diabetes = null;
+        bone = null;
+        breast = null;
+        brain = null;
+        gastric = null;
+        liver = null;
+        lung = null;
         diseaseComboBox.removeAllItems();
         diseaseComboBox.addItem("Aids");
         diseaseComboBox.addItem("Heart Disease");
@@ -84,54 +91,51 @@ public class PatientDataMonitoringJPanel extends javax.swing.JPanel {
         diseaseComboBox.addItem("Liver Cancer");
         diseaseComboBox.addItem("Lung Cancer");
     }
-    public void populateMedicalTest()
-    {
+
+    public void populateMedicalTest() {
         //populte medical test
-                    DefaultTableModel dtm = (DefaultTableModel) medicalTestTable.getModel();
-                    dtm.setRowCount(0);
-                    for(int i=patient.getListOfMedicalTests().size()-1;i>=0;i--)
-                    {
-                        MedicalTest mt = patient.getListOfMedicalTests().get(i);
-                        //if(!mt.getResult().isEmpty())
-                        //{
-                        Object [] row = new Object[3];
-                        row[0] = mt.getDate();
-                        row[1]=mt;
-                        row[2]=mt.getResult();
-                        dtm.addRow(row);
-                       // }
-                    }
+        DefaultTableModel dtm = (DefaultTableModel) medicalTestTable.getModel();
+        dtm.setRowCount(0);
+        for (int i = patient.getListOfMedicalTests().size() - 1; i >= 0; i--) {
+            MedicalTest mt = patient.getListOfMedicalTests().get(i);
+            //if(!mt.getResult().isEmpty())
+            //{
+            Object[] row = new Object[3];
+            row[0] = mt.getDate();
+            row[1] = mt;
+            row[2] = mt.getResult();
+            dtm.addRow(row);
+            //patient.getListOfMedicalTests().remove(mt);
+            // }
+        }
+
     }
-    public void populateVitalSigns()
-    {
+
+    public void populateVitalSigns() {
         DefaultTableModel model = (DefaultTableModel) vitalSignsTable.getModel();
-                    model.setRowCount(0);
-                    for(int i=patient.getMedicalData().getListOfVitalSigns().size()-1;i>=0;i--)
-                    { 
-                        VitalSigns vs = patient.getMedicalData().getListOfVitalSigns().get(i);
-                        Object[] row = new Object[6];
-                        row[0] = vs.getDate();
-                        row[1] = vs.getPluseRate();
-                        row[2] = vs.getTemp();
-                        row[3] = vs.getBp();
-                        row[4] = vs.getRespirationRate();
-                        row[5] = vs.getD().getName();
-                        model.addRow(row);    
-                    }
+        model.setRowCount(0);
+        for (int i = patient.getMedicalData().getListOfVitalSigns().size() - 1; i >= 0; i--) {
+            VitalSigns vs = patient.getMedicalData().getListOfVitalSigns().get(i);
+            Object[] row = new Object[6];
+            row[0] = vs.getDate();
+            row[1] = vs.getPluseRate();
+            row[2] = vs.getTemp();
+            row[3] = vs.getBp();
+            row[4] = vs.getRespirationRate();
+            row[5] = vs.getD().getName();
+            model.addRow(row);
+        }
     }
-    public void populateworkrequestable()
-    {
+
+    public void populateworkrequestable() {
         //populate workrequest
         DefaultTableModel dtm1 = (DefaultTableModel) testRequestJTable.getModel();
         dtm1.setRowCount(0);
-        for(WorkRequest work : account.getWorkQueue().getWorkRequestList())
-        {
-            if((work instanceof Lab4DocWQ) && (!work.getStatus().equals("Received")))
-            {
+        for (WorkRequest work : account.getWorkQueue().getWorkRequestList()) {
+            if ((work instanceof Lab4DocWQ) && (!work.getStatus().equals("Received"))) {
                 Lab4DocWQ ldwq = (Lab4DocWQ) work;
-                if(ldwq.getPatientId().equals(patient.getID()))
-                {
-                    Object [] row = new Object[4];
+                if (ldwq.getPatientId().equals(patient.getID())) {
+                    Object[] row = new Object[4];
                     row[0] = ldwq.getMessage();
                     row[1] = ldwq.getReceiver();
                     row[2] = ldwq;
@@ -142,13 +146,11 @@ public class PatientDataMonitoringJPanel extends javax.swing.JPanel {
             }
         }
     }
-    
-    public void populatetable(PatientDisease pd)
-    {
+
+    public void populatetable(PatientDisease pd) {
         DefaultTableModel model = (DefaultTableModel) diseaseTable.getModel();
         model.setRowCount(0);
-        for(int i=pd.getListOfTreatment().size()-1;i>=0;i--)
-        {
+        for (int i = pd.getListOfTreatment().size() - 1; i >= 0; i--) {
             Treatment t = pd.getListOfTreatment().get(i);
             Object[] row = new Object[4];
             row[0] = t;
@@ -159,91 +161,69 @@ public class PatientDataMonitoringJPanel extends javax.swing.JPanel {
         }
         descTextArea.setText("");
     }
-    public void populateDisease()
-    {
-        for (PatientDisease pd : patient.getMedicalData().getListOfDisease())
-                    {
-                        if (pd.getName().equals("Aids"))
-                        {
-                            aidsRadioButton.setSelected(true);
-                            aids=pd;
-                            shaidsTextField.setText(pd.getShortDescription());
-                            ddAidesTextField23.setText(pd.getDetectedDate());
-                        }
-                        else if (pd.getName().equals("Heart Disease"))
-                        {
-                            heartAttackRadioButton.setSelected(true);
-                            heart=pd;
-                            shHeartTextField.setText(pd.getShortDescription());
-                            ddHeartTextField.setText(pd.getDetectedDate());
-                        }
-                        else if (pd.getName().equals("Paralysis"))
-                        {
-                            paralysisRadioButton.setSelected(true);
-                            paralysis=pd;
-                            shParaTextField.setText(pd.getShortDescription());
-                            ddParaTextField.setText(pd.getDetectedDate());
-                        }
-                        else if (pd.getName().equals("Diabetes"))
-                        {
-                            diabetesRadioButton.setSelected(true);
-                            diabetes=pd;
-                            shDiaTextField.setText(pd.getShortDescription());
-                            ddDiaTextField.setText(pd.getDetectedDate());
-                        }
-                        else if (pd.getName().equals("Bone Cancer"))
-                        {
-                            boneCancerRadioButton.setSelected(true);
-                            bone=pd;
-                            shBoneTextField.setText(pd.getShortDescription());
-                            ddBoneTextField.setText(pd.getDetectedDate());
-                        }
-                        else if (pd.getName().equals("Breast Cancer"))
-                        {
-                            breastRadioButton.setSelected(true);
-                            breast=pd;
-                            shBreastTextField.setText(pd.getShortDescription());
-                            ddBreastTextField.setText(pd.getDetectedDate());
-                        }
-                        else if (pd.getName().equals("Brain Tumor"))
-                        {
-                            brainRadioButton.setSelected(true);
-                            brain=pd;
-                            shBrainTextField.setText(pd.getShortDescription());
-                            ddBrainTextField.setText(pd.getDetectedDate());
-                        }
-                        else if (pd.getName().equals("Gastric Cancer"))
-                        {
-                            gastricRadioButton.setSelected(true);
-                            gastric=pd;
-                            shGasTextField.setText(pd.getShortDescription());
-                            ddGasTextField.setText(pd.getDetectedDate());
-                        }
-                        else if (pd.getName().equals("Liver Cancer"))
-                        {
-                            liverRadioButton.setSelected(true);
-                            liver=pd;
-                            shLiverTextField.setText(pd.getShortDescription());
-                            ddLiverTextField.setText(pd.getDetectedDate());
-                        }
-                        else if (pd.getName().equals("Lung Cancer"))
-                        {
-                            lungRadioButton.setSelected(true);
-                            lung=pd;
-                            shLungTextField.setText(pd.getShortDescription());
-                            ddLungTextField.setText(pd.getDetectedDate());
-                        }
-                        //diseaseComboBox.addItem(pd); 
-                    }
+
+    public void populateDisease() {
+        for (PatientDisease pd : patient.getMedicalData().getListOfDisease()) {
+            if (pd.getName().equals("Aids")) {
+                aidsRadioButton.setSelected(true);
+                aids = pd;
+                shaidsTextField.setText(pd.getShortDescription());
+                ddAidesTextField23.setText(pd.getDetectedDate());
+            } else if (pd.getName().equals("Heart Disease")) {
+                heartAttackRadioButton.setSelected(true);
+                heart = pd;
+                shHeartTextField.setText(pd.getShortDescription());
+                ddHeartTextField.setText(pd.getDetectedDate());
+            } else if (pd.getName().equals("Paralysis")) {
+                paralysisRadioButton.setSelected(true);
+                paralysis = pd;
+                shParaTextField.setText(pd.getShortDescription());
+                ddParaTextField.setText(pd.getDetectedDate());
+            } else if (pd.getName().equals("Diabetes")) {
+                diabetesRadioButton.setSelected(true);
+                diabetes = pd;
+                shDiaTextField.setText(pd.getShortDescription());
+                ddDiaTextField.setText(pd.getDetectedDate());
+            } else if (pd.getName().equals("Bone Cancer")) {
+                boneCancerRadioButton.setSelected(true);
+                bone = pd;
+                shBoneTextField.setText(pd.getShortDescription());
+                ddBoneTextField.setText(pd.getDetectedDate());
+            } else if (pd.getName().equals("Breast Cancer")) {
+                breastRadioButton.setSelected(true);
+                breast = pd;
+                shBreastTextField.setText(pd.getShortDescription());
+                ddBreastTextField.setText(pd.getDetectedDate());
+            } else if (pd.getName().equals("Brain Tumor")) {
+                brainRadioButton.setSelected(true);
+                brain = pd;
+                shBrainTextField.setText(pd.getShortDescription());
+                ddBrainTextField.setText(pd.getDetectedDate());
+            } else if (pd.getName().equals("Gastric Cancer")) {
+                gastricRadioButton.setSelected(true);
+                gastric = pd;
+                shGasTextField.setText(pd.getShortDescription());
+                ddGasTextField.setText(pd.getDetectedDate());
+            } else if (pd.getName().equals("Liver Cancer")) {
+                liverRadioButton.setSelected(true);
+                liver = pd;
+                shLiverTextField.setText(pd.getShortDescription());
+                ddLiverTextField.setText(pd.getDetectedDate());
+            } else if (pd.getName().equals("Lung Cancer")) {
+                lungRadioButton.setSelected(true);
+                lung = pd;
+                shLungTextField.setText(pd.getShortDescription());
+                ddLungTextField.setText(pd.getDetectedDate());
+            }
+            //diseaseComboBox.addItem(pd); 
+        }
     }
-    public void populatetable()
-    {
+
+    public void populatetable() {
         DefaultTableModel model = (DefaultTableModel) diseaseTable.getModel();
         model.setRowCount(0);
-        for(PatientDisease pd : patient.getMedicalData().getListOfDisease())
-        {
-            for(int i=pd.getListOfTreatment().size()-1;i>=0;i--)
-            {
+        for (PatientDisease pd : patient.getMedicalData().getListOfDisease()) {
+            for (int i = pd.getListOfTreatment().size() - 1; i >= 0; i--) {
                 Treatment t = pd.getListOfTreatment().get(i);
                 Object[] row = new Object[4];
                 row[0] = t;
@@ -255,12 +235,40 @@ public class PatientDataMonitoringJPanel extends javax.swing.JPanel {
         }
     }
 
-    /**
-     * This method is called from within the constructor to initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is always
-     * regenerated by the Form Editor.
-     */
-    @SuppressWarnings("unchecked")
+    public void populateInsurance1() {
+        //populte insurance plans
+        DefaultTableModel dtm = (DefaultTableModel) tblInsurance1.getModel();
+        dtm.setRowCount(0);
+        for (int i = patient.getListOfInsurance().size() - 1; i >= 0; i--) {
+            InsuranceDirectory mt = patient.getListOfInsurance().get(i);
+            //if(!mt.getResult().isEmpty())
+            //{
+            Object[] row = new Object[1];
+            row[0] = mt;
+            dtm.addRow(row);
+            // }
+        }
+    }
+
+    public void populateInsurance2() {
+        //populte insurance plans after claiming
+        int selectedRow = tblInsurance1.getSelectedRow();
+        if (selectedRow >= 0) {
+            Insurance i = (Insurance) tblInsurance1.getValueAt(selectedRow, 0);
+            DefaultTableModel dtm = (DefaultTableModel) tblInsurance2.getModel();
+            dtm.setRowCount(0);
+            Object row[] = new Object[3];
+            row[0] = i;
+            dtm.addRow(row);
+        }
+    }
+
+        /**
+         * This method is called from within the constructor to initialize the
+         * form. WARNING: Do NOT modify this code. The content of this method is
+         * always regenerated by the Form Editor.
+         */
+        @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -316,10 +324,10 @@ public class PatientDataMonitoringJPanel extends javax.swing.JPanel {
         jPanel3 = new javax.swing.JPanel();
         jLabel17 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        jButton1 = new javax.swing.JButton();
+        tblInsurance2 = new javax.swing.JTable();
+        btnClaim = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        tblInsurance1 = new javax.swing.JTable();
         jLabel19 = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
@@ -773,56 +781,51 @@ public class PatientDataMonitoringJPanel extends javax.swing.JPanel {
         jLabel17.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel17.setText("Health Insurance Plan");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tblInsurance2.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Health Plan", "Premium", "Name of organization"
+                "Insurance Plan"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false
+                false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
-        if (jTable1.getColumnModel().getColumnCount() > 0) {
-            jTable1.getColumnModel().getColumn(0).setResizable(false);
-            jTable1.getColumnModel().getColumn(1).setResizable(false);
-            jTable1.getColumnModel().getColumn(2).setResizable(false);
-        }
+        jScrollPane1.setViewportView(tblInsurance2);
 
-        jButton1.setText("Claim");
+        btnClaim.setText("Claim");
+        btnClaim.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnClaimActionPerformed(evt);
+            }
+        });
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        tblInsurance1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Health Plan", "Premium", "Name of organization"
+                "Insurance Plan"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false
+                false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane2.setViewportView(jTable2);
-        if (jTable2.getColumnModel().getColumnCount() > 0) {
-            jTable2.getColumnModel().getColumn(0).setResizable(false);
-            jTable2.getColumnModel().getColumn(1).setResizable(false);
-            jTable2.getColumnModel().getColumn(2).setResizable(false);
-        }
+        jScrollPane2.setViewportView(tblInsurance1);
 
         jLabel19.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel19.setText("Selected Health Insurance Plan to be clamed");
+        jLabel19.setText("Selected Health Insurance Plan to be claimed");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -832,28 +835,30 @@ public class PatientDataMonitoringJPanel extends javax.swing.JPanel {
             .addComponent(jLabel19, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(108, 108, 108)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 599, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(355, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 386, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(568, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnClaim, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(370, 370, 370))
             .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel3Layout.createSequentialGroup()
                     .addGap(107, 107, 107)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 599, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(356, Short.MAX_VALUE)))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 388, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(567, Short.MAX_VALUE)))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(29, 29, 29)
                 .addComponent(jLabel17)
-                .addGap(203, 203, 203)
+                .addGap(146, 146, 146)
+                .addComponent(btnClaim, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(26, 26, 26)
                 .addComponent(jLabel19)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(28, 28, 28)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(242, Short.MAX_VALUE))
+                .addContainerGap(301, Short.MAX_VALUE))
             .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel3Layout.createSequentialGroup()
                     .addGap(91, 91, 91)
@@ -985,7 +990,6 @@ public class PatientDataMonitoringJPanel extends javax.swing.JPanel {
         jTabbedPane1.addTab("Medical Tests", jPanel5);
 
         aidsRadioButton.setText("AIDS");
-        aidsRadioButton.setEnabled(false);
         aidsRadioButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 aidsRadioButtonActionPerformed(evt);
@@ -993,31 +997,22 @@ public class PatientDataMonitoringJPanel extends javax.swing.JPanel {
         });
 
         boneCancerRadioButton.setText("Bone Cancer");
-        boneCancerRadioButton.setEnabled(false);
 
         heartAttackRadioButton.setText("Heart");
-        heartAttackRadioButton.setEnabled(false);
 
         paralysisRadioButton.setText("Paralysis");
-        paralysisRadioButton.setEnabled(false);
 
         diabetesRadioButton.setText("Diabetes");
-        diabetesRadioButton.setEnabled(false);
 
         breastRadioButton.setText("Breast Cancer");
-        breastRadioButton.setEnabled(false);
 
         brainRadioButton.setText("Brain Tumor");
-        brainRadioButton.setEnabled(false);
 
         gastricRadioButton.setText("Gastric Cancer");
-        gastricRadioButton.setEnabled(false);
 
         liverRadioButton.setText("Liver Cancer");
-        liverRadioButton.setEnabled(false);
 
         lungRadioButton.setText("Lung Cancer");
-        lungRadioButton.setEnabled(false);
 
         jLabel21.setText("Short Description");
 
@@ -1274,9 +1269,7 @@ public class PatientDataMonitoringJPanel extends javax.swing.JPanel {
                             .addComponent(lungButton))
                         .addGap(6, 6, 6)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(jLabel23)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(jLabel23)
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addComponent(jLabel29)
                                 .addGap(8, 8, 8)
@@ -1510,16 +1503,14 @@ public class PatientDataMonitoringJPanel extends javax.swing.JPanel {
 
     private void loadButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadButtonActionPerformed
         // TODO add your handling code here:
-        if (patientIdTextField.getText().isEmpty())
+        int temp = 0;
+        if (patientIdTextField.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Please enter the id", "Error", 0);
-        else
-        {
+        } else {
             //diseaseComboBox.removeAllItems();
-            for(Patient p : business.getPatientDirectory().getListOfPatient())
-            {
-                if(p.getID().equals(patientIdTextField.getText()))
-                {
-                    patient=p;
+            for (Patient p : business.getPatientDirectory().getListOfPatient()) {
+                if (p.getID().equals(patientIdTextField.getText())) {
+                    patient = p;
                     firstNameTextField.setText(p.getFirstname());
                     lastNameTextField.setText(p.getLastName());
                     genderTextField.setText(p.getGender());
@@ -1533,46 +1524,46 @@ public class PatientDataMonitoringJPanel extends javax.swing.JPanel {
                     stateTextField.setText(p.getState());
                     countryTextField.setText(p.getCountry());
                     zipcodeTextField.setText(p.getZipcode());
-                    
-                    for(Disability d : p.getMedicalData().getListOfDisability())
-                    {
-                        if(d.getDisabilityType()!=null)
+
+                    for (Disability d : p.getMedicalData().getListOfDisability()) {
+                        if (d.getDisabilityType() != null) {
                             switch (d.getDisabilityType()) {
-                            case Autism:
-                                autismRadioButton.setSelected(true);
-                                break;
-                            case CerebralPalsy:
-                                cerebRadioButton.setSelected(true);
-                                break;
-                            case ChronicIllness:
-                                chronicRadioButton.setSelected(true);
-                                break;
-                            case Depression:
-                                depressionRadioButton.setSelected(true);
-                                break;
-                            case DownSyndrome:
-                                downRadioButton.setSelected(true);
-                                break;
-                            case Dyscalculia:
-                                dyscalRadioButton.setSelected(true);
-                                break;
-                            case Dyslexia:
-                                dyslxRadioButton.setSelected(true);
-                                break;
-                            case Epilepsy:
-                                epilepsyRadioButton.setSelected(true);
-                                break;
-                            case HearingLossAndDeafness:
-                                hearingRadioButton.setSelected(true);
-                                break;
-                            case IntellectualDisability:
-                                intellectRadioButton.setSelected(true);
-                                break;
-                            case SpinaBifida:
-                                spinaRadioButton.setSelected(true);
-                                break;
-                            default:
-                                break;
+                                case Autism:
+                                    autismRadioButton.setSelected(true);
+                                    break;
+                                case CerebralPalsy:
+                                    cerebRadioButton.setSelected(true);
+                                    break;
+                                case ChronicIllness:
+                                    chronicRadioButton.setSelected(true);
+                                    break;
+                                case Depression:
+                                    depressionRadioButton.setSelected(true);
+                                    break;
+                                case DownSyndrome:
+                                    downRadioButton.setSelected(true);
+                                    break;
+                                case Dyscalculia:
+                                    dyscalRadioButton.setSelected(true);
+                                    break;
+                                case Dyslexia:
+                                    dyslxRadioButton.setSelected(true);
+                                    break;
+                                case Epilepsy:
+                                    epilepsyRadioButton.setSelected(true);
+                                    break;
+                                case HearingLossAndDeafness:
+                                    hearingRadioButton.setSelected(true);
+                                    break;
+                                case IntellectualDisability:
+                                    intellectRadioButton.setSelected(true);
+                                    break;
+                                case SpinaBifida:
+                                    spinaRadioButton.setSelected(true);
+                                    break;
+                                default:
+                                    break;
+                            }
                         }
                     }
                     /*for (PatientDisease pd : p.getMedicalData().getListOfDisease())
@@ -1651,58 +1642,51 @@ public class PatientDataMonitoringJPanel extends javax.swing.JPanel {
                     }*/
                     populatetable();
                     populateDisease();
+                    populateInsurance1();
                     populateVitalSigns();
                     populateMedicalTest();
-                    
+                    temp = 1;
                     populateworkrequestable();
                 }
-                else
-                    JOptionPane.showMessageDialog(null, "Invalid Patient Id", "Error", 0);
+            }
+            if (temp == 0) {
+                JOptionPane.showMessageDialog(null, "Invalid Patient Id", "Error", 0);
             }
         }
     }//GEN-LAST:event_loadButtonActionPerformed
 
     private void chronicRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chronicRadioButtonActionPerformed
         // TODO add your handling code here:
-        if(patient!=null)
-        {
-            int j=0;
+        if (patient != null) {
+            int j = 0;
             //Disability disability;
-            if(chronicRadioButton.isSelected())
-            {
-                 for(Disability d : patient.getMedicalData().getListOfDisability())
-                 {
-                     if(d.getDisabilityType()==Disability.DisabilityType.ChronicIllness)
-                     {
-                         j=1;
-                         //disability=d;
-                         break;
-                     }
-                 }
-                 if (j==0)
-                 {
-                     patient.getMedicalData().getListOfDisability().add(new Disability(Disability.DisabilityType.ChronicIllness));
-                 }
+            if (chronicRadioButton.isSelected()) {
+                for (Disability d : patient.getMedicalData().getListOfDisability()) {
+                    if (d.getDisabilityType() == Disability.DisabilityType.ChronicIllness) {
+                        j = 1;
+                        //disability=d;
+                        break;
+                    }
+                }
+                if (j == 0) {
+                    patient.getMedicalData().getListOfDisability().add(new Disability(Disability.DisabilityType.ChronicIllness));
+                }
+            } else {
+                for (Disability d : patient.getMedicalData().getListOfDisability()) {
+                    if (d.getDisabilityType() == Disability.DisabilityType.ChronicIllness) {
+                        patient.getMedicalData().getListOfDisability().remove(d);
+                    }
+                }
             }
-            else
-            {
-                for(Disability d : patient.getMedicalData().getListOfDisability())
-                 {
-                     if(d.getDisabilityType()==Disability.DisabilityType.ChronicIllness)
-                     {
-                         patient.getMedicalData().getListOfDisability().remove(d);
-                     }
-                 }
-            }        
         }
     }//GEN-LAST:event_chronicRadioButtonActionPerformed
 
     private void aidsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aidsButtonActionPerformed
         // TODO add your handling code here:
-        if(patient==null)
+        if (patient == null) {
             return;
-        if(aids==null)
-        {
+        }
+        if (aids == null) {
             JOptionPane.showMessageDialog(null, "Patient doesnt have aids disease");
             /*if(shaidsTextField.getText().isEmpty() || descTextArea.getText().isEmpty())
                 JOptionPane.showMessageDialog(null, "Please Enter short description of the disease and treatment details in description field");
@@ -1718,9 +1702,7 @@ public class PatientDataMonitoringJPanel extends javax.swing.JPanel {
                 pd.getListOfTreatment().add(t);
                 patient.getMedicalData().getListOfDisease().add(pd);
             }*/
-        }
-        else
-        {
+        } else {
             populatetable(aids);
             aidsButton.setEnabled(false);
             heartButton.setEnabled(false);
@@ -1733,21 +1715,19 @@ public class PatientDataMonitoringJPanel extends javax.swing.JPanel {
             liverButton.setEnabled(false);
             gastricButton.setEnabled(false);
             diseaseComboBox.setSelectedItem("Aids");
-        
+
         }
         descTextArea.setText("");
     }//GEN-LAST:event_aidsButtonActionPerformed
 
     private void heartButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_heartButtonActionPerformed
         // TODO add your handling code here:
-        if(patient==null)
+        if (patient == null) {
             return;
-        if(heart==null)
-        {
-            JOptionPane.showMessageDialog(null, "Patient doesnt have heart disease");
         }
-        else
-        {
+        if (heart == null) {
+            JOptionPane.showMessageDialog(null, "Patient doesnt have heart disease");
+        } else {
             populatetable(heart);
             aidsButton.setEnabled(false);
             heartButton.setEnabled(false);
@@ -1759,21 +1739,19 @@ public class PatientDataMonitoringJPanel extends javax.swing.JPanel {
             lungButton.setEnabled(false);
             liverButton.setEnabled(false);
             gastricButton.setEnabled(false);
-        diseaseComboBox.setSelectedItem("Heart Disease");
+            diseaseComboBox.setSelectedItem("Heart Disease");
         }
         descTextArea.setText("");
     }//GEN-LAST:event_heartButtonActionPerformed
 
     private void paralysisButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_paralysisButtonActionPerformed
         // TODO add your handling code here:
-        if(patient==null)
+        if (patient == null) {
             return;
-        if(paralysis==null)
-        {
-            JOptionPane.showMessageDialog(null, "Patient doesnt have paralysis");
         }
-        else
-        {
+        if (paralysis == null) {
+            JOptionPane.showMessageDialog(null, "Patient doesnt have paralysis");
+        } else {
             populatetable(paralysis);
             aidsButton.setEnabled(false);
             heartButton.setEnabled(false);
@@ -1792,14 +1770,12 @@ public class PatientDataMonitoringJPanel extends javax.swing.JPanel {
 
     private void diabetesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_diabetesButtonActionPerformed
         // TODO add your handling code here:
-        if(patient==null)
+        if (patient == null) {
             return;
-        if(diabetes==null)
-        {
-            JOptionPane.showMessageDialog(null, "Patient doesnt have diabetes");
         }
-        else
-        {
+        if (diabetes == null) {
+            JOptionPane.showMessageDialog(null, "Patient doesnt have diabetes");
+        } else {
             populatetable(diabetes);
             aidsButton.setEnabled(false);
             heartButton.setEnabled(false);
@@ -1818,14 +1794,12 @@ public class PatientDataMonitoringJPanel extends javax.swing.JPanel {
 
     private void boneButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_boneButtonActionPerformed
         // TODO add your handling code here:
-        if(patient==null)
+        if (patient == null) {
             return;
-        if(bone==null)
-        {
-            JOptionPane.showMessageDialog(null, "Patient doesnt have bone cancer");
         }
-        else
-        {
+        if (bone == null) {
+            JOptionPane.showMessageDialog(null, "Patient doesnt have bone cancer");
+        } else {
             populatetable(bone);
             aidsButton.setEnabled(false);
             heartButton.setEnabled(false);
@@ -1838,21 +1812,19 @@ public class PatientDataMonitoringJPanel extends javax.swing.JPanel {
             liverButton.setEnabled(false);
             gastricButton.setEnabled(false);
             diseaseComboBox.setSelectedItem("Bone Cancer");
-        
+
         }
         descTextArea.setText("");
     }//GEN-LAST:event_boneButtonActionPerformed
 
     private void breastButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_breastButtonActionPerformed
         // TODO add your handling code here:
-        if(patient==null)
+        if (patient == null) {
             return;
-        if(breast==null)
-        {
-            JOptionPane.showMessageDialog(null, "Patient doesnt have breast cancer");
         }
-        else
-        {
+        if (breast == null) {
+            JOptionPane.showMessageDialog(null, "Patient doesnt have breast cancer");
+        } else {
             populatetable(breast);
             aidsButton.setEnabled(false);
             heartButton.setEnabled(false);
@@ -1865,21 +1837,19 @@ public class PatientDataMonitoringJPanel extends javax.swing.JPanel {
             liverButton.setEnabled(false);
             gastricButton.setEnabled(false);
             diseaseComboBox.setSelectedItem("Brain Tumor");
-        
+
         }
         descTextArea.setText("");
     }//GEN-LAST:event_breastButtonActionPerformed
 
     private void brainButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_brainButtonActionPerformed
         // TODO add your handling code here:
-        if(patient==null)
+        if (patient == null) {
             return;
-        if(brain==null)
-        {
-            JOptionPane.showMessageDialog(null, "Patient doesnt have brain tumor");
         }
-        else
-        {
+        if (brain == null) {
+            JOptionPane.showMessageDialog(null, "Patient doesnt have brain tumor");
+        } else {
             populatetable(brain);
             aidsButton.setEnabled(false);
             heartButton.setEnabled(false);
@@ -1898,14 +1868,12 @@ public class PatientDataMonitoringJPanel extends javax.swing.JPanel {
 
     private void gastricButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gastricButtonActionPerformed
         // TODO add your handling code here:
-        if(patient==null)
+        if (patient == null) {
             return;
-        if(gastric==null)
-        {
-            JOptionPane.showMessageDialog(null, "Patient doesnt have brain gastric cancer");
         }
-        else
-        {
+        if (gastric == null) {
+            JOptionPane.showMessageDialog(null, "Patient doesnt have brain gastric cancer");
+        } else {
             populatetable(gastric);
             aidsButton.setEnabled(false);
             heartButton.setEnabled(false);
@@ -1924,14 +1892,12 @@ public class PatientDataMonitoringJPanel extends javax.swing.JPanel {
 
     private void liverButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_liverButtonActionPerformed
         // TODO add your handling code here:
-        if(patient==null)
+        if (patient == null) {
             return;
-        if(liver==null)
-        {
-            JOptionPane.showMessageDialog(null, "Patient doesnt have liver cancer");
         }
-        else
-        {
+        if (liver == null) {
+            JOptionPane.showMessageDialog(null, "Patient doesnt have liver cancer");
+        } else {
             populatetable(liver);
             aidsButton.setEnabled(false);
             heartButton.setEnabled(false);
@@ -1950,14 +1916,12 @@ public class PatientDataMonitoringJPanel extends javax.swing.JPanel {
 
     private void lungButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lungButtonActionPerformed
         // TODO add your handling code here:
-        if(patient==null)
+        if (patient == null) {
             return;
-        if(lung==null)
-        {
-            JOptionPane.showMessageDialog(null, "Patient doesnt have lung cancer");
         }
-        else
-        {
+        if (lung == null) {
+            JOptionPane.showMessageDialog(null, "Patient doesnt have lung cancer");
+        } else {
             populatetable(lung);
             aidsButton.setEnabled(false);
             heartButton.setEnabled(false);
@@ -1976,499 +1940,375 @@ public class PatientDataMonitoringJPanel extends javax.swing.JPanel {
 
     private void saveDescriptionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveDescriptionButtonActionPerformed
         // TODO add your handling code here:
-        if(patient==null)
+        if (patient == null) {
             return;
-        if(diseaseComboBox.getSelectedItem()==null)
+        }
+        if (diseaseComboBox.getSelectedItem() == null) {
             JOptionPane.showMessageDialog(null, "please select a disease before adding description", "Error", 0);
-        else
-        {
-            int t=0;
-            PatientDisease pd=null;
-            for(PatientDisease patientDisease : patient.getMedicalData().getListOfDisease())
-            {
-                if(patientDisease.getName().equals(String.valueOf(diseaseComboBox.getSelectedItem())))
-                {
-                    pd=patientDisease;
-                    t=1;
+        } else {
+            int t = 0;
+            PatientDisease pd = null;
+            for (PatientDisease patientDisease : patient.getMedicalData().getListOfDisease()) {
+                if (patientDisease.getName().equals(String.valueOf(diseaseComboBox.getSelectedItem()))) {
+                    pd = patientDisease;
+                    t = 1;
                     break;
                 }
             }
-            if(t==0)
-            {
+            if (t == 0) {
                 pd = new PatientDisease();
                 pd.setName(String.valueOf(diseaseComboBox.getSelectedItem()));
                 patient.getMedicalData().getListOfDisease().add(pd);
             }
-            if (pd.getName().equals("Aids"))
-            {
-                if(shaidsTextField.getText().isEmpty())
-                {
+            if (pd.getName().equals("Aids")) {
+                if (shaidsTextField.getText().isEmpty()) {
                     JOptionPane.showMessageDialog(null, "Please enter short description of the detected disease");
                     return;
-                }
-                else
+                } else {
                     pd.setShortDescription(shaidsTextField.getText());
-            }
-            else if (pd.getName().equals("Heart Disease"))
-            {
-                if(shHeartTextField.getText().isEmpty())
-                {
+                }
+            } else if (pd.getName().equals("Heart Disease")) {
+                if (shHeartTextField.getText().isEmpty()) {
                     JOptionPane.showMessageDialog(null, "Please enter short description of the detected disease");
                     return;
-                }
-                else
+                } else {
                     pd.setShortDescription(shHeartTextField.getText());
-            }
-            else if (pd.getName().equals("Paralysis"))
-            {
-                if(shParaTextField.getText().isEmpty())
-                {
+                }
+            } else if (pd.getName().equals("Paralysis")) {
+                if (shParaTextField.getText().isEmpty()) {
                     JOptionPane.showMessageDialog(null, "Please enter short description of the detected disease");
                     return;
-                }
-                else
+                } else {
                     pd.setShortDescription(shParaTextField.getText());
-            }
-            else if (pd.getName().equals("Diabetes"))
-            {
-                if(shDiaTextField.getText().isEmpty())
-                {
+                }
+            } else if (pd.getName().equals("Diabetes")) {
+                if (shDiaTextField.getText().isEmpty()) {
                     JOptionPane.showMessageDialog(null, "Please enter short description of the detected disease");
                     return;
-                }
-                else
+                } else {
                     pd.setShortDescription(shDiaTextField.getText());
-            }
-            else if (pd.getName().equals("Bone Cancer"))
-            {
-                if(shBoneTextField.getText().isEmpty())
-                {
+                }
+            } else if (pd.getName().equals("Bone Cancer")) {
+                if (shBoneTextField.getText().isEmpty()) {
                     JOptionPane.showMessageDialog(null, "Please enter short description of the detected disease");
                     return;
-                }
-                else
+                } else {
                     pd.setShortDescription(shBoneTextField.getText());
-            }
-            else if (pd.getName().equals("Breast Cancer"))
-            {
-                if(shBreastTextField.getText().isEmpty())
-                {
+                }
+            } else if (pd.getName().equals("Breast Cancer")) {
+                if (shBreastTextField.getText().isEmpty()) {
                     JOptionPane.showMessageDialog(null, "Please enter short description of the detected disease");
                     return;
-                }
-                else
+                } else {
                     pd.setShortDescription(shBreastTextField.getText());
-            }
-            else if (pd.getName().equals("Brain Tumor"))
-            {
-                if(shBrainTextField.getText().isEmpty())
-                {
+                }
+            } else if (pd.getName().equals("Brain Tumor")) {
+                if (shBrainTextField.getText().isEmpty()) {
                     JOptionPane.showMessageDialog(null, "Please enter short description of the detected disease");
                     return;
-                }
-                else
+                } else {
                     pd.setShortDescription(shBrainTextField.getText());
-            }
-            else if (pd.getName().equals("Gastric Cancer"))
-            {
-                if(shGasTextField.getText().isEmpty())
-                {
+                }
+            } else if (pd.getName().equals("Gastric Cancer")) {
+                if (shGasTextField.getText().isEmpty()) {
                     JOptionPane.showMessageDialog(null, "Please enter short description of the detected disease");
                     return;
-                }
-                else
+                } else {
                     pd.setShortDescription(shGasTextField.getText());
-            }
-            else if (pd.getName().equals("Liver Cancer"))
-            {
-                if(shLiverTextField.getText().isEmpty())
-                {
+                }
+            } else if (pd.getName().equals("Liver Cancer")) {
+                if (shLiverTextField.getText().isEmpty()) {
                     JOptionPane.showMessageDialog(null, "Please enter short description of the detected disease");
                     return;
-                }
-                else
+                } else {
                     pd.setShortDescription(shLiverTextField.getText());
-            }
-            else if (pd.getName().equals("Lung Cancer"))
-            {
-                if(shLungTextField.getText().isEmpty())
-                {
+                }
+            } else if (pd.getName().equals("Lung Cancer")) {
+                if (shLungTextField.getText().isEmpty()) {
                     JOptionPane.showMessageDialog(null, "Please enter short description of the detected disease");
                     return;
-                }
-                else
+                } else {
                     pd.setShortDescription(shLungTextField.getText());
+                }
             }
-            Treatment treatment=new Treatment();
+            Treatment treatment = new Treatment();
             treatment.setDoctor(doctor);
             treatment.setComments(descTextArea.getText());
             pd.getListOfTreatment().add(treatment);
             populateDisease();
             populatetable(pd);
             descTextArea.setText("");
-           // loadButtonActionPerformed(java.awt.event.ActionEvent evt);
+            // loadButtonActionPerformed(java.awt.event.ActionEvent evt);
         }
     }//GEN-LAST:event_saveDescriptionButtonActionPerformed
 
     private void autismRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_autismRadioButtonActionPerformed
         // TODO add your handling code here:
-        if(patient!=null)
-        {
-            int j=0;
+        if (patient != null) {
+            int j = 0;
             //Disability disability;
-            if(autismRadioButton.isSelected())
-            {
-                 for(Disability d : patient.getMedicalData().getListOfDisability())
-                 {
-                     if(d.getDisabilityType()==Disability.DisabilityType.Autism)
-                     {
-                         j=1;
-                         //disability=d;
-                         break;
-                     }
-                 }
-                 if (j==0)
-                 {
-                     patient.getMedicalData().getListOfDisability().add(new Disability(Disability.DisabilityType.Autism));
-                 }
+            if (autismRadioButton.isSelected()) {
+                for (Disability d : patient.getMedicalData().getListOfDisability()) {
+                    if (d.getDisabilityType() == Disability.DisabilityType.Autism) {
+                        j = 1;
+                        //disability=d;
+                        break;
+                    }
+                }
+                if (j == 0) {
+                    patient.getMedicalData().getListOfDisability().add(new Disability(Disability.DisabilityType.Autism));
+                }
+            } else {
+                for (Disability d : patient.getMedicalData().getListOfDisability()) {
+                    if (d.getDisabilityType() == Disability.DisabilityType.Autism) {
+                        patient.getMedicalData().getListOfDisability().remove(d);
+                    }
+                }
             }
-            else
-            {
-                for(Disability d : patient.getMedicalData().getListOfDisability())
-                 {
-                     if(d.getDisabilityType()==Disability.DisabilityType.Autism)
-                     {
-                         patient.getMedicalData().getListOfDisability().remove(d);
-                     }
-                 }
-            }        
         }
     }//GEN-LAST:event_autismRadioButtonActionPerformed
 
     private void hearingRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hearingRadioButtonActionPerformed
         // TODO add your handling code here:
-        if(patient!=null)
-        {
-            int j=0;
+        if (patient != null) {
+            int j = 0;
             //Disability disability;
-            if(hearingRadioButton.isSelected())
-            {
-                 for(Disability d : patient.getMedicalData().getListOfDisability())
-                 {
-                     if(d.getDisabilityType()==Disability.DisabilityType.HearingLossAndDeafness)
-                     {
-                         j=1;
-                         //disability=d;
-                         break;
-                     }
-                 }
-                 if (j==0)
-                 {
-                     patient.getMedicalData().getListOfDisability().add(new Disability(Disability.DisabilityType.HearingLossAndDeafness));
-                 }
+            if (hearingRadioButton.isSelected()) {
+                for (Disability d : patient.getMedicalData().getListOfDisability()) {
+                    if (d.getDisabilityType() == Disability.DisabilityType.HearingLossAndDeafness) {
+                        j = 1;
+                        //disability=d;
+                        break;
+                    }
+                }
+                if (j == 0) {
+                    patient.getMedicalData().getListOfDisability().add(new Disability(Disability.DisabilityType.HearingLossAndDeafness));
+                }
+            } else {
+                for (Disability d : patient.getMedicalData().getListOfDisability()) {
+                    if (d.getDisabilityType() == Disability.DisabilityType.HearingLossAndDeafness) {
+                        patient.getMedicalData().getListOfDisability().remove(d);
+                    }
+                }
             }
-            else
-            {
-                for(Disability d : patient.getMedicalData().getListOfDisability())
-                 {
-                     if(d.getDisabilityType()==Disability.DisabilityType.HearingLossAndDeafness)
-                     {
-                         patient.getMedicalData().getListOfDisability().remove(d);
-                     }
-                 }
-            }        
         }
     }//GEN-LAST:event_hearingRadioButtonActionPerformed
 
     private void intellectRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_intellectRadioButtonActionPerformed
         // TODO add your handling code here:
-        if(patient!=null)
-        {
-            int j=0;
+        if (patient != null) {
+            int j = 0;
             //Disability disability;
-            if(intellectRadioButton.isSelected())
-            {
-                 for(Disability d : patient.getMedicalData().getListOfDisability())
-                 {
-                     if(d.getDisabilityType()==Disability.DisabilityType.IntellectualDisability)
-                     {
-                         j=1;
-                         //disability=d;
-                         break;
-                     }
-                 }
-                 if (j==0)
-                 {
-                     patient.getMedicalData().getListOfDisability().add(new Disability(Disability.DisabilityType.IntellectualDisability));
-                 }
+            if (intellectRadioButton.isSelected()) {
+                for (Disability d : patient.getMedicalData().getListOfDisability()) {
+                    if (d.getDisabilityType() == Disability.DisabilityType.IntellectualDisability) {
+                        j = 1;
+                        //disability=d;
+                        break;
+                    }
+                }
+                if (j == 0) {
+                    patient.getMedicalData().getListOfDisability().add(new Disability(Disability.DisabilityType.IntellectualDisability));
+                }
+            } else {
+                for (Disability d : patient.getMedicalData().getListOfDisability()) {
+                    if (d.getDisabilityType() == Disability.DisabilityType.IntellectualDisability) {
+                        patient.getMedicalData().getListOfDisability().remove(d);
+                    }
+                }
             }
-            else
-            {
-                for(Disability d : patient.getMedicalData().getListOfDisability())
-                 {
-                     if(d.getDisabilityType()==Disability.DisabilityType.IntellectualDisability)
-                     {
-                         patient.getMedicalData().getListOfDisability().remove(d);
-                     }
-                 }
-            }        
         }
     }//GEN-LAST:event_intellectRadioButtonActionPerformed
 
     private void dyslxRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dyslxRadioButtonActionPerformed
         // TODO add your handling code here:
-        if(patient!=null)
-        {
-            int j=0;
+        if (patient != null) {
+            int j = 0;
             //Disability disability;
-            if(dyslxRadioButton.isSelected())
-            {
-                 for(Disability d : patient.getMedicalData().getListOfDisability())
-                 {
-                     if(d.getDisabilityType()==Disability.DisabilityType.Dyslexia)
-                     {
-                         j=1;
-                         //disability=d;
-                         break;
-                     }
-                 }
-                 if (j==0)
-                 {
-                     patient.getMedicalData().getListOfDisability().add(new Disability(Disability.DisabilityType.Dyslexia));
-                 }
+            if (dyslxRadioButton.isSelected()) {
+                for (Disability d : patient.getMedicalData().getListOfDisability()) {
+                    if (d.getDisabilityType() == Disability.DisabilityType.Dyslexia) {
+                        j = 1;
+                        //disability=d;
+                        break;
+                    }
+                }
+                if (j == 0) {
+                    patient.getMedicalData().getListOfDisability().add(new Disability(Disability.DisabilityType.Dyslexia));
+                }
+            } else {
+                for (Disability d : patient.getMedicalData().getListOfDisability()) {
+                    if (d.getDisabilityType() == Disability.DisabilityType.Dyslexia) {
+                        patient.getMedicalData().getListOfDisability().remove(d);
+                    }
+                }
             }
-            else
-            {
-                for(Disability d : patient.getMedicalData().getListOfDisability())
-                 {
-                     if(d.getDisabilityType()==Disability.DisabilityType.Dyslexia)
-                     {
-                         patient.getMedicalData().getListOfDisability().remove(d);
-                     }
-                 }
-            }        
         }
     }//GEN-LAST:event_dyslxRadioButtonActionPerformed
 
     private void dyscalRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dyscalRadioButtonActionPerformed
         // TODO add your handling code here:
-        if(patient!=null)
-        {
-            int j=0;
+        if (patient != null) {
+            int j = 0;
             //Disability disability;
-            if(dyscalRadioButton.isSelected())
-            {
-                 for(Disability d : patient.getMedicalData().getListOfDisability())
-                 {
-                     if(d.getDisabilityType()==Disability.DisabilityType.Dyscalculia)
-                     {
-                         j=1;
-                         //disability=d;
-                         break;
-                     }
-                 }
-                 if (j==0)
-                 {
-                     patient.getMedicalData().getListOfDisability().add(new Disability(Disability.DisabilityType.Dyscalculia));
-                 }
+            if (dyscalRadioButton.isSelected()) {
+                for (Disability d : patient.getMedicalData().getListOfDisability()) {
+                    if (d.getDisabilityType() == Disability.DisabilityType.Dyscalculia) {
+                        j = 1;
+                        //disability=d;
+                        break;
+                    }
+                }
+                if (j == 0) {
+                    patient.getMedicalData().getListOfDisability().add(new Disability(Disability.DisabilityType.Dyscalculia));
+                }
+            } else {
+                for (Disability d : patient.getMedicalData().getListOfDisability()) {
+                    if (d.getDisabilityType() == Disability.DisabilityType.Dyscalculia) {
+                        patient.getMedicalData().getListOfDisability().remove(d);
+                    }
+                }
             }
-            else
-            {
-                for(Disability d : patient.getMedicalData().getListOfDisability())
-                 {
-                     if(d.getDisabilityType()==Disability.DisabilityType.Dyscalculia)
-                     {
-                         patient.getMedicalData().getListOfDisability().remove(d);
-                     }
-                 }
-            }        
         }
     }//GEN-LAST:event_dyscalRadioButtonActionPerformed
 
     private void epilepsyRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_epilepsyRadioButtonActionPerformed
         // TODO add your handling code here:
-        if(patient!=null)
-        {
-            int j=0;
+        if (patient != null) {
+            int j = 0;
             //Disability disability;
-            if(epilepsyRadioButton.isSelected())
-            {
-                 for(Disability d : patient.getMedicalData().getListOfDisability())
-                 {
-                     if(d.getDisabilityType()==Disability.DisabilityType.Epilepsy)
-                     {
-                         j=1;
-                         //disability=d;
-                         break;
-                     }
-                 }
-                 if (j==0)
-                 {
-                     patient.getMedicalData().getListOfDisability().add(new Disability(Disability.DisabilityType.Epilepsy));
-                 }
+            if (epilepsyRadioButton.isSelected()) {
+                for (Disability d : patient.getMedicalData().getListOfDisability()) {
+                    if (d.getDisabilityType() == Disability.DisabilityType.Epilepsy) {
+                        j = 1;
+                        //disability=d;
+                        break;
+                    }
+                }
+                if (j == 0) {
+                    patient.getMedicalData().getListOfDisability().add(new Disability(Disability.DisabilityType.Epilepsy));
+                }
+            } else {
+                for (Disability d : patient.getMedicalData().getListOfDisability()) {
+                    if (d.getDisabilityType() == Disability.DisabilityType.Epilepsy) {
+                        patient.getMedicalData().getListOfDisability().remove(d);
+                    }
+                }
             }
-            else
-            {
-                for(Disability d : patient.getMedicalData().getListOfDisability())
-                 {
-                     if(d.getDisabilityType()==Disability.DisabilityType.Epilepsy)
-                     {
-                         patient.getMedicalData().getListOfDisability().remove(d);
-                     }
-                 }
-            }        
         }
     }//GEN-LAST:event_epilepsyRadioButtonActionPerformed
 
     private void spinaRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_spinaRadioButtonActionPerformed
         // TODO add your handling code here:
-        if(patient!=null)
-        {
-            int j=0;
+        if (patient != null) {
+            int j = 0;
             //Disability disability;
-            if(spinaRadioButton.isSelected())
-            {
-                 for(Disability d : patient.getMedicalData().getListOfDisability())
-                 {
-                     if(d.getDisabilityType()==Disability.DisabilityType.SpinaBifida)
-                     {
-                         j=1;
-                         //disability=d;
-                         break;
-                     }
-                 }
-                 if (j==0)
-                 {
-                     patient.getMedicalData().getListOfDisability().add(new Disability(Disability.DisabilityType.SpinaBifida));
-                 }
+            if (spinaRadioButton.isSelected()) {
+                for (Disability d : patient.getMedicalData().getListOfDisability()) {
+                    if (d.getDisabilityType() == Disability.DisabilityType.SpinaBifida) {
+                        j = 1;
+                        //disability=d;
+                        break;
+                    }
+                }
+                if (j == 0) {
+                    patient.getMedicalData().getListOfDisability().add(new Disability(Disability.DisabilityType.SpinaBifida));
+                }
+            } else {
+                for (Disability d : patient.getMedicalData().getListOfDisability()) {
+                    if (d.getDisabilityType() == Disability.DisabilityType.SpinaBifida) {
+                        patient.getMedicalData().getListOfDisability().remove(d);
+                    }
+                }
             }
-            else
-            {
-                for(Disability d : patient.getMedicalData().getListOfDisability())
-                 {
-                     if(d.getDisabilityType()==Disability.DisabilityType.SpinaBifida)
-                     {
-                         patient.getMedicalData().getListOfDisability().remove(d);
-                     }
-                 }
-            }        
         }
     }//GEN-LAST:event_spinaRadioButtonActionPerformed
 
     private void downRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_downRadioButtonActionPerformed
         // TODO add your handling code here:
-        if(patient!=null)
-        {
-            int j=0;
+        if (patient != null) {
+            int j = 0;
             //Disability disability;
-            if(downRadioButton.isSelected())
-            {
-                 for(Disability d : patient.getMedicalData().getListOfDisability())
-                 {
-                     if(d.getDisabilityType()==Disability.DisabilityType.DownSyndrome)
-                     {
-                         j=1;
-                         //disability=d;
-                         break;
-                     }
-                 }
-                 if (j==0)
-                 {
-                     patient.getMedicalData().getListOfDisability().add(new Disability(Disability.DisabilityType.DownSyndrome));
-                 }
+            if (downRadioButton.isSelected()) {
+                for (Disability d : patient.getMedicalData().getListOfDisability()) {
+                    if (d.getDisabilityType() == Disability.DisabilityType.DownSyndrome) {
+                        j = 1;
+                        //disability=d;
+                        break;
+                    }
+                }
+                if (j == 0) {
+                    patient.getMedicalData().getListOfDisability().add(new Disability(Disability.DisabilityType.DownSyndrome));
+                }
+            } else {
+                for (Disability d : patient.getMedicalData().getListOfDisability()) {
+                    if (d.getDisabilityType() == Disability.DisabilityType.DownSyndrome) {
+                        patient.getMedicalData().getListOfDisability().remove(d);
+                    }
+                }
             }
-            else
-            {
-                for(Disability d : patient.getMedicalData().getListOfDisability())
-                 {
-                     if(d.getDisabilityType()==Disability.DisabilityType.DownSyndrome)
-                     {
-                         patient.getMedicalData().getListOfDisability().remove(d);
-                     }
-                 }
-            }        
         }
     }//GEN-LAST:event_downRadioButtonActionPerformed
 
     private void cerebRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cerebRadioButtonActionPerformed
         // TODO add your handling code here:
-        if(patient!=null)
-        {
-            int j=0;
+        if (patient != null) {
+            int j = 0;
             //Disability disability;
-            if(cerebRadioButton.isSelected())
-            {
-                 for(Disability d : patient.getMedicalData().getListOfDisability())
-                 {
-                     if(d.getDisabilityType()==Disability.DisabilityType.CerebralPalsy)
-                     {
-                         j=1;
-                         //disability=d;
-                         break;
-                     }
-                 }
-                 if (j==0)
-                 {
-                     patient.getMedicalData().getListOfDisability().add(new Disability(Disability.DisabilityType.CerebralPalsy));
-                 }
+            if (cerebRadioButton.isSelected()) {
+                for (Disability d : patient.getMedicalData().getListOfDisability()) {
+                    if (d.getDisabilityType() == Disability.DisabilityType.CerebralPalsy) {
+                        j = 1;
+                        //disability=d;
+                        break;
+                    }
+                }
+                if (j == 0) {
+                    patient.getMedicalData().getListOfDisability().add(new Disability(Disability.DisabilityType.CerebralPalsy));
+                }
+            } else {
+                for (Disability d : patient.getMedicalData().getListOfDisability()) {
+                    if (d.getDisabilityType() == Disability.DisabilityType.CerebralPalsy) {
+                        patient.getMedicalData().getListOfDisability().remove(d);
+                    }
+                }
             }
-            else
-            {
-                for(Disability d : patient.getMedicalData().getListOfDisability())
-                 {
-                     if(d.getDisabilityType()==Disability.DisabilityType.CerebralPalsy)
-                     {
-                         patient.getMedicalData().getListOfDisability().remove(d);
-                     }
-                 }
-            }        
         }
     }//GEN-LAST:event_cerebRadioButtonActionPerformed
 
     private void depressionRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_depressionRadioButtonActionPerformed
         // TODO add your handling code here:
-        if(patient!=null)
-        {
-            int j=0;
+        if (patient != null) {
+            int j = 0;
             //Disability disability;
-            if(depressionRadioButton.isSelected())
-            {
-                 for(Disability d : patient.getMedicalData().getListOfDisability())
-                 {
-                     if(d.getDisabilityType()==Disability.DisabilityType.Depression)
-                     {
-                         j=1;
-                         //disability=d;
-                         break;
-                     }
-                 }
-                 if (j==0)
-                 {
-                     patient.getMedicalData().getListOfDisability().add(new Disability(Disability.DisabilityType.Depression));
-                 }
+            if (depressionRadioButton.isSelected()) {
+                for (Disability d : patient.getMedicalData().getListOfDisability()) {
+                    if (d.getDisabilityType() == Disability.DisabilityType.Depression) {
+                        j = 1;
+                        //disability=d;
+                        break;
+                    }
+                }
+                if (j == 0) {
+                    patient.getMedicalData().getListOfDisability().add(new Disability(Disability.DisabilityType.Depression));
+                }
+            } else {
+                for (Disability d : patient.getMedicalData().getListOfDisability()) {
+                    if (d.getDisabilityType() == Disability.DisabilityType.Depression) {
+                        patient.getMedicalData().getListOfDisability().remove(d);
+                    }
+                }
             }
-            else
-            {
-                for(Disability d : patient.getMedicalData().getListOfDisability())
-                 {
-                     if(d.getDisabilityType()==Disability.DisabilityType.Depression)
-                     {
-                         patient.getMedicalData().getListOfDisability().remove(d);
-                     }
-                 }
-            }        
         }
     }//GEN-LAST:event_depressionRadioButtonActionPerformed
 
     private void basicSaveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_basicSaveButtonActionPerformed
         // TODO add your handling code here:
-        if(patientIdTextField.getText().isEmpty())
+        if (patientIdTextField.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Please Fill all the details", "Error", 0);
-        else
-        {
-            if(business.getPatientDirectory().checkPatientId(patientIdTextField.getText()))
-            {
-                Patient p =business.getPatientDirectory().addPatient();
+        } else {
+            if (business.getPatientDirectory().checkPatientId(patientIdTextField.getText())) {
+                Patient p = business.getPatientDirectory().addPatient();
                 p.setAptNo(aptNoTextField.getText());
                 p.setStreet(streetTextField.getText());
                 p.setState(stateTextField.getText());
@@ -2483,22 +2323,20 @@ public class PatientDataMonitoringJPanel extends javax.swing.JPanel {
                 p.setID(patientIdTextField.getText());
                 p.setLastName(lastNameTextField.getText());
                 p.setPhNum(phNumTextField.getText());
-            }
-            else
+            } else {
                 JOptionPane.showMessageDialog(null, "Patient Id already assigned to some Patient,press load to see details of the given id or enter another ID", TOOL_TIP_TEXT_KEY, HEIGHT);
+            }
         }
     }//GEN-LAST:event_basicSaveButtonActionPerformed
 
     private void vitalSaveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_vitalSaveButtonActionPerformed
         // TODO add your handling code here:
-        if(patient==null)
+        if (patient == null) {
             return;
-        if(tempTextField.getText().isEmpty() || pulseTextField.getText().isEmpty() || bpTextField.getText().isEmpty() || respRateTextField.getText().isEmpty())
-        {
-            JOptionPane.showMessageDialog(null, "please enter all the fields", "Error", 0);
         }
-        else
-        {
+        if (tempTextField.getText().isEmpty() || pulseTextField.getText().isEmpty() || bpTextField.getText().isEmpty() || respRateTextField.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "please enter all the fields", "Error", 0);
+        } else {
             VitalSigns vs = new VitalSigns();
             vs.setBp(Float.parseFloat(bpTextField.getText()));
             vs.setTemp(Float.parseFloat(tempTextField.getText()));
@@ -2513,12 +2351,9 @@ public class PatientDataMonitoringJPanel extends javax.swing.JPanel {
     private void viewDescButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewDescButtonActionPerformed
         // TODO add your handling code here:
         int selectedRow = diseaseTable.getSelectedRow();
-        if (selectedRow < 0)
-        {
+        if (selectedRow < 0) {
             JOptionPane.showMessageDialog(null, "Please select a row ", "Warning", JOptionPane.WARNING_MESSAGE);
-        } 
-        else 
-        {
+        } else {
 
             Treatment p = (Treatment) diseaseTable.getValueAt(selectedRow, 0);
             descTextArea.setText(p.getComments());
@@ -2530,26 +2365,22 @@ public class PatientDataMonitoringJPanel extends javax.swing.JPanel {
     private void doneButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_doneButtonActionPerformed
         // TODO add your handling code here:
         int selectedRow = testRequestJTable.getSelectedRow();
-        if (selectedRow < 0)
-        {
+        if (selectedRow < 0) {
             JOptionPane.showMessageDialog(null, "Please select a row ", "Warning", JOptionPane.WARNING_MESSAGE);
-        } 
-        else 
-        {
+        } else {
 
             Lab4DocWQ ldwq = (Lab4DocWQ) testRequestJTable.getValueAt(selectedRow, 2);
-            if(ldwq.getStatus().equals("Complete"))
-            {
+            if (ldwq.getStatus().equals("Complete")) {
                 MedicalTest mt = ldwq.getMedicalTest();
                 patient.getListOfMedicalTests().add(mt);
                 ldwq.setStatus("Received");
-            }
-            else
+            } else {
                 JOptionPane.showMessageDialog(null, "The request must be completed ", "Warning", 2);
+            }
             populateworkrequestable();
             populateMedicalTest();
         }
-    
+
     }//GEN-LAST:event_doneButtonActionPerformed
 
     private void phNumTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_phNumTextFieldActionPerformed
@@ -2567,15 +2398,15 @@ public class PatientDataMonitoringJPanel extends javax.swing.JPanel {
         diseaseComboBox.setEnabled(true);
         aidsButton.setEnabled(true);
         heartButton.setEnabled(true);
-            paralysisButton.setEnabled(true);
-            diabetesButton.setEnabled(true);
-            boneButton.setEnabled(true);
-            breastButton.setEnabled(true);
-            brainButton.setEnabled(true);
-            lungButton.setEnabled(true);
-            liverButton.setEnabled(true);
-            gastricButton.setEnabled(true);
-            diseaseComboBox.removeAllItems();
+        paralysisButton.setEnabled(true);
+        diabetesButton.setEnabled(true);
+        boneButton.setEnabled(true);
+        breastButton.setEnabled(true);
+        brainButton.setEnabled(true);
+        lungButton.setEnabled(true);
+        liverButton.setEnabled(true);
+        gastricButton.setEnabled(true);
+        diseaseComboBox.removeAllItems();
         diseaseComboBox.addItem("Aids");
         diseaseComboBox.addItem("Heart Disease");
         diseaseComboBox.addItem("Paralysis");
@@ -2595,10 +2426,9 @@ public class PatientDataMonitoringJPanel extends javax.swing.JPanel {
 
     private void reqTestButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reqTestButtonActionPerformed
         // TODO add your handling code here:
-        if(testTextField.getText().isEmpty())
+        if (testTextField.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Please enter the test to be carried out", "Error", 0);
-        else
-        {
+        } else {
             Lab4DocWQ lab4DocWQ = new Lab4DocWQ();
             MedicalTest mt = new MedicalTest();
             mt.setName(testTextField.getText());
@@ -2609,13 +2439,11 @@ public class PatientDataMonitoringJPanel extends javax.swing.JPanel {
             lab4DocWQ.setStatus("Requested");
             Organization org = null;
             Enterprise ent = null;
-            for (Enterprise e1 : enterprise.getNetwork().getEnterpriseDirectory().getEnterpriseList()){
-                if (e1 instanceof LabEnterprise){
+            for (Enterprise e1 : enterprise.getNetwork().getEnterpriseDirectory().getEnterpriseList()) {
+                if (e1 instanceof LabEnterprise) {
                     ent = e1;
-                    for(Organization o1: ent.getOrganizationDirectory().getOrganizationList())
-                    {
-                        if(o1 instanceof LabAssistantOrganization)
-                        {
+                    for (Organization o1 : ent.getOrganizationDirectory().getOrganizationList()) {
+                        if (o1 instanceof LabAssistantOrganization) {
                             org = o1;
                             break;
                         }
@@ -2623,24 +2451,23 @@ public class PatientDataMonitoringJPanel extends javax.swing.JPanel {
                     break;
                 }
             }
-            if (org!=null){
+            if (org != null) {
                 org.getWorkQueue().getWorkRequestList().add(lab4DocWQ);
-            account.getWorkQueue().getWorkRequestList().add(lab4DocWQ);
+                account.getWorkQueue().getWorkRequestList().add(lab4DocWQ);
             }
             populateworkrequestable();
-            
+
         }
     }//GEN-LAST:event_reqTestButtonActionPerformed
 
     private void delButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_delButtonActionPerformed
         // TODO add your handling code here:
-        int selectedRow= testRequestJTable.getSelectedRow();
-        if(selectedRow<0){
+        int selectedRow = testRequestJTable.getSelectedRow();
+        if (selectedRow < 0) {
             JOptionPane.showMessageDialog(null, "Please select the row to delete the account", "Warning", JOptionPane.WARNING_MESSAGE);
-        }
-        else{
+        } else {
 
-            WorkRequest p=(WorkRequest) testRequestJTable.getValueAt(selectedRow, 2);
+            WorkRequest p = (WorkRequest) testRequestJTable.getValueAt(selectedRow, 2);
 
             // s.getWorkQueue().getWorkRequestList().remove(p);
             organization.getWorkQueue().getWorkRequestList().remove(p);
@@ -2651,6 +2478,39 @@ public class PatientDataMonitoringJPanel extends javax.swing.JPanel {
             populateworkrequestable();
         }
     }//GEN-LAST:event_delButtonActionPerformed
+
+    private void btnClaimActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClaimActionPerformed
+        // TODO add your handling code here:
+        int selectedRow = tblInsurance1.getSelectedRow();
+        if (selectedRow <= 0) {
+            JOptionPane.showMessageDialog(null, "Please select an Insurance plan form the table.", "Error", 0);
+        } else {
+            InsuranceWQ iWQ = new InsuranceWQ();
+            Insurance mt = new Insurance();
+            iWQ.setInsurance(mt);
+
+            Organization org = null;
+            Enterprise ent = null;
+            for (Enterprise e1 : enterprise.getNetwork().getEnterpriseDirectory().getEnterpriseList()) {
+                if (e1 instanceof InsuranceEnterprise) {
+                    ent = e1;
+                    for (Organization o1 : ent.getOrganizationDirectory().getOrganizationList()) {
+                        if (o1 instanceof InsuranceManagerOrganization) {
+                            org = o1;
+                            break;
+                        }
+                    }
+                    break;
+                }
+            }
+            if (org != null) {
+                org.getWorkQueue().getWorkRequestList().add(iWQ);
+                account.getWorkQueue().getWorkRequestList().add(iWQ);
+            }
+            populateInsurance1();
+            populateInsurance2();
+        }
+    }//GEN-LAST:event_btnClaimActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -2667,6 +2527,7 @@ public class PatientDataMonitoringJPanel extends javax.swing.JPanel {
     private javax.swing.JRadioButton brainRadioButton;
     private javax.swing.JButton breastButton;
     private javax.swing.JRadioButton breastRadioButton;
+    private javax.swing.JButton btnClaim;
     private javax.swing.JRadioButton cerebRadioButton;
     private javax.swing.JRadioButton chronicRadioButton;
     private javax.swing.JTextField cityTextField;
@@ -2703,7 +2564,6 @@ public class PatientDataMonitoringJPanel extends javax.swing.JPanel {
     private javax.swing.JButton heartButton;
     private javax.swing.JTextField homePhNumTextField;
     private javax.swing.JRadioButton intellectRadioButton;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -2748,8 +2608,6 @@ public class PatientDataMonitoringJPanel extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTable jTable2;
     private javax.swing.JTextField jTextField6;
     private javax.swing.JTextField lastNameTextField;
     private javax.swing.JButton liverButton;
@@ -2780,6 +2638,8 @@ public class PatientDataMonitoringJPanel extends javax.swing.JPanel {
     private javax.swing.JRadioButton spinaRadioButton;
     private javax.swing.JTextField stateTextField;
     private javax.swing.JTextField streetTextField;
+    private javax.swing.JTable tblInsurance1;
+    private javax.swing.JTable tblInsurance2;
     private javax.swing.JTextField tempTextField;
     private javax.swing.JTable testRequestJTable;
     private javax.swing.JTextField testTextField;

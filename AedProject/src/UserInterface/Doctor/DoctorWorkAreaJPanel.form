@@ -34,10 +34,6 @@
                           <EmptySpace min="120" pref="120" max="-2" attributes="0"/>
                           <Component id="manageEmployeeJButton" min="-2" pref="150" max="-2" attributes="0"/>
                       </Group>
-                      <Group type="102" attributes="0">
-                          <EmptySpace min="120" pref="120" max="-2" attributes="0"/>
-                          <Component id="userJButton" min="-2" pref="150" max="-2" attributes="0"/>
-                      </Group>
                   </Group>
                   <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
               </Group>
@@ -49,7 +45,7 @@
           <EmptySpace min="0" pref="500" max="32767" attributes="0"/>
           <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
               <Group type="102" attributes="0">
-                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                  <EmptySpace min="0" pref="72" max="32767" attributes="0"/>
                   <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
                   <EmptySpace min="21" pref="21" max="-2" attributes="0"/>
                   <Component id="enterpriseLabel" min="-2" pref="30" max="-2" attributes="0"/>
@@ -57,9 +53,7 @@
                   <Component id="patientJButton" min="-2" max="-2" attributes="0"/>
                   <EmptySpace min="27" pref="27" max="-2" attributes="0"/>
                   <Component id="manageEmployeeJButton" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace min="27" pref="27" max="-2" attributes="0"/>
-                  <Component id="userJButton" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                  <EmptySpace min="0" pref="265" max="32767" attributes="0"/>
               </Group>
           </Group>
       </Group>
@@ -92,18 +86,10 @@
     </Component>
     <Component class="javax.swing.JButton" name="manageEmployeeJButton">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Manage Employee"/>
+        <Property name="text" type="java.lang.String" value="Request Organ"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="manageEmployeeJButtonActionPerformed"/>
-      </Events>
-    </Component>
-    <Component class="javax.swing.JButton" name="userJButton">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Manage User"/>
-      </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="userJButtonActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>
