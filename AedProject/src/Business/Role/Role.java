@@ -29,9 +29,13 @@ public abstract class Role {
         OrganDonationAdmin("OrganDonationAdmin"),
         OrganDonationInventoryManager("OrganDonationInventoryManager"),
         LabAdmin("LabAdmin"),
+<<<<<<< HEAD
         LabAssistant("LabAssistant"),
         InsuranceAdmin("InsuranceAdmin"),
         InsuranceInventoryManager("InsuranceInventoryManager");
+=======
+        LabAssistant("LabAssistant");
+>>>>>>> 0f5e4d868fad4b746360859abccdaf206fea2eb3
         
         
         

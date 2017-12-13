@@ -94,6 +94,7 @@ public class PatientDataMonitoringJPanel extends javax.swing.JPanel {
 
     public void populateMedicalTest() {
         //populte medical test
+<<<<<<< HEAD
         DefaultTableModel dtm = (DefaultTableModel) medicalTestTable.getModel();
         dtm.setRowCount(0);
         for (int i = patient.getListOfMedicalTests().size() - 1; i >= 0; i--) {
@@ -109,6 +110,24 @@ public class PatientDataMonitoringJPanel extends javax.swing.JPanel {
             // }
         }
 
+=======
+                    DefaultTableModel dtm = (DefaultTableModel) medicalTestTable.getModel();
+                    dtm.setRowCount(0);
+                    for(int i=patient.getListOfMedicalTests().size()-1;i>=0;i--)
+                    {
+                        MedicalTest mt = patient.getListOfMedicalTests().get(i);
+                        //if(!mt.getResult().isEmpty())
+                        //{
+                        Object [] row = new Object[3];
+                        row[0] = mt.getDate();
+                        row[1]=mt;
+                        row[2]=mt.getResult();
+                        dtm.addRow(row);
+                        //patient.getListOfMedicalTests().remove(mt);
+                       // }
+                    }
+                    
+>>>>>>> 0f5e4d868fad4b746360859abccdaf206fea2eb3
     }
 
     public void populateVitalSigns() {
@@ -1503,8 +1522,13 @@ public class PatientDataMonitoringJPanel extends javax.swing.JPanel {
 
     private void loadButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadButtonActionPerformed
         // TODO add your handling code here:
+<<<<<<< HEAD
         int temp = 0;
         if (patientIdTextField.getText().isEmpty()) {
+=======
+        int temp=0;
+        if (patientIdTextField.getText().isEmpty())
+>>>>>>> 0f5e4d868fad4b746360859abccdaf206fea2eb3
             JOptionPane.showMessageDialog(null, "Please enter the id", "Error", 0);
         } else {
             //diseaseComboBox.removeAllItems();
@@ -1645,13 +1669,21 @@ public class PatientDataMonitoringJPanel extends javax.swing.JPanel {
                     populateInsurance1();
                     populateVitalSigns();
                     populateMedicalTest();
+<<<<<<< HEAD
                     temp = 1;
                     populateworkrequestable();
                 }
             }
             if (temp == 0) {
                 JOptionPane.showMessageDialog(null, "Invalid Patient Id", "Error", 0);
+=======
+                    temp=1;
+                    populateworkrequestable();
+                }
+>>>>>>> 0f5e4d868fad4b746360859abccdaf206fea2eb3
             }
+            if(temp==0)
+                    JOptionPane.showMessageDialog(null, "Invalid Patient Id", "Error", 0);
         }
     }//GEN-LAST:event_loadButtonActionPerformed
 

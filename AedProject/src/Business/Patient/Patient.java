@@ -20,6 +20,7 @@ public class Patient extends Person{
     private MedicalData medicalData;
     private boolean death;
     private ArrayList<MedicalTest> listOfMedicalTests;
+<<<<<<< HEAD
     private ArrayList<InsuranceDirectory> listOfInsurance;
    // private UserAccount ua;
 
@@ -30,13 +31,19 @@ public class Patient extends Person{
     public void setListOfInsurance(ArrayList<InsuranceDirectory> listOfInsurance) {
         this.listOfInsurance = listOfInsurance;
     }
+=======
+   // private UserAccount ua;
+>>>>>>> 0f5e4d868fad4b746360859abccdaf206fea2eb3
     
     public Patient()
     {
         poc = new ArrayList<>();
         medicalData=new MedicalData();
         listOfMedicalTests=new ArrayList<>();
+<<<<<<< HEAD
         listOfInsurance = new ArrayList<>();
+=======
+>>>>>>> 0f5e4d868fad4b746360859abccdaf206fea2eb3
         death=false;
     }
 
@@ -104,6 +111,7 @@ public class Patient extends Person{
         listOfMedicalTests.add(mt);
         return mt;
     }
+<<<<<<< HEAD
     
     public InsuranceDirectory addInsurance()
     {
@@ -111,4 +119,6 @@ public class Patient extends Person{
         listOfInsurance.add(id);
         return id;
     }
+=======
+>>>>>>> 0f5e4d868fad4b746360859abccdaf206fea2eb3
 }

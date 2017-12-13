@@ -26,11 +26,8 @@ public abstract class Role {
         BloodBankAdmin("BloodBankAdmin"),
         BloodBankInventoryManager("BloodBankInventoryManager"),
         Doctor("Doctor"),
-<<<<<<< HEAD:AedProject/AedProject/src/Business/Role/Role.java
         OrganDonationAdmin("OrganDonationAdmin"),
         OrganDonationInventoryManager("OrganDonationInventoryManager"),
-=======
->>>>>>> fb0d14a7ab4cd0a07cfe1fd312055ae282be2f60:AedProject/src/Business/Role/Role.java
         LabAdmin("LabAdmin"),
         LabAssistant("LabAssistant");
         

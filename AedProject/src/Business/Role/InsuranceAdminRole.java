@@ -22,9 +22,12 @@ public class InsuranceAdminRole extends Role{
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
+<<<<<<< HEAD
     @Override
     public String toString()
     {
         return RoleType.InsuranceAdmin.getValue();
     } 
+=======
+>>>>>>> 0f5e4d868fad4b746360859abccdaf206fea2eb3
 }

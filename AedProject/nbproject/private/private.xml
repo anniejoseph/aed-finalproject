@@ -3,11 +3,15 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+<<<<<<< HEAD
             <file>file:/C:/Users/Annie/Documents/NetBeansProjects/AEDFinalProject/AedProject/src/Business/Organization/Organization.java</file>
             <file>file:/C:/Users/Annie/Documents/NetBeansProjects/AEDFinalProject/AedProject/src/UserInterface/Doctor/PatientDataMonitoringJPanel.java</file>
             <file>file:/C:/Users/Annie/Documents/NetBeansProjects/AEDFinalProject/AedProject/src/Business/Enterprise/Enterprise.java</file>
             <file>file:/C:/Users/Annie/Documents/NetBeansProjects/AEDFinalProject/AedProject/src/Business/ConfigureASystem.java</file>
             <file>file:/C:/Users/Annie/Documents/NetBeansProjects/AEDFinalProject/AedProject/src/Business/Role/Role.java</file>
+=======
+            <file>file:/C:/Users/JAGTAP/Documents/NetBeansProjects/AedProject/src/Business/DB4Outil/DB4OUtil.java</file>
+>>>>>>> 0f5e4d868fad4b746360859abccdaf206fea2eb3
         </group>
     </open-files>
 </project-private>

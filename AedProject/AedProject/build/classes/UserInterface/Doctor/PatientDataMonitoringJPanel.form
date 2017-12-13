@@ -1009,10 +1009,7 @@
                               </Group>
                               <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Group type="102" attributes="0">
-                                      <Component id="jLabel23" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace max="32767" attributes="0"/>
-                                  </Group>
+                                  <Component id="jLabel23" min="-2" max="-2" attributes="0"/>
                                   <Group type="102" attributes="0">
                                       <Component id="jLabel29" min="-2" max="-2" attributes="0"/>
                                       <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
@@ -1143,7 +1140,6 @@
             <Component class="javax.swing.JRadioButton" name="aidsRadioButton">
               <Properties>
                 <Property name="text" type="java.lang.String" value="AIDS"/>
-                <Property name="enabled" type="boolean" value="false"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="aidsRadioButtonActionPerformed"/>
@@ -1152,55 +1148,46 @@
             <Component class="javax.swing.JRadioButton" name="boneCancerRadioButton">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Bone Cancer"/>
-                <Property name="enabled" type="boolean" value="false"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JRadioButton" name="heartAttackRadioButton">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Heart"/>
-                <Property name="enabled" type="boolean" value="false"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JRadioButton" name="paralysisRadioButton">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Paralysis"/>
-                <Property name="enabled" type="boolean" value="false"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JRadioButton" name="diabetesRadioButton">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Diabetes"/>
-                <Property name="enabled" type="boolean" value="false"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JRadioButton" name="breastRadioButton">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Breast Cancer"/>
-                <Property name="enabled" type="boolean" value="false"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JRadioButton" name="brainRadioButton">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Brain Tumor"/>
-                <Property name="enabled" type="boolean" value="false"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JRadioButton" name="gastricRadioButton">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Gastric Cancer"/>
-                <Property name="enabled" type="boolean" value="false"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JRadioButton" name="liverRadioButton">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Liver Cancer"/>
-                <Property name="enabled" type="boolean" value="false"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JRadioButton" name="lungRadioButton">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Lung Cancer"/>
-                <Property name="enabled" type="boolean" value="false"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JTextField" name="shaidsTextField">
